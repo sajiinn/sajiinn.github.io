@@ -576,7 +576,7 @@ $('#tpl').onclick=()=>download('contoh-format-sajiin.csv','responden,jenis_kelam
 $('#f-plat').onchange=render; $('#f-sent').onchange=render;
 $$('#trend-seg button').forEach(b=>b.onclick=()=>{trendMode=b.dataset.m;render()});
 $('#b-new').onclick=goHome; $('#logo').onclick=goHome;
-$('#b-pdf').onclick=()=>print();
+$('#b-pdf').onclick=e=>window.unduhPDF?unduhPDF(e.currentTarget):print();
 function setExp(on){document.body.classList.toggle('no-exp',!on);$('#b-exp').textContent='Penjelasan: '+(on?'nyala':'mati');try{localStorage.setItem('sajiin-penjelasan',on?'1':'0')}catch(e){}}
 $('#b-exp').onclick=()=>setExp(document.body.classList.contains('no-exp'));
 (function(){let v='1';try{v=localStorage.getItem('sajiin-penjelasan')||'1'}catch(e){}setExp(v!=='0')})();
@@ -584,6 +584,8 @@ $('#b-csv').onclick=()=>download('sajiin-berlabel.csv',[[...COLNAMES,...(HAS_TEX
 </script>
 <script src="penyajian.js?v=10"></script>
 <script src="spss.js?v=6"></script>
-<script src="unduh.js?v=3"></script>
+<script src="tabel.js?v=1"></script>
+<script src="unduh.js?v=5"></script>
+<script src="pdf.js?v=3"></script>
 </body>
 </html>

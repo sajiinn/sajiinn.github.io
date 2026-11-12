@@ -71,7 +71,7 @@ function decorate(){
   // tabel
   dash.querySelectorAll('table:not([data-dl])').forEach(t=>{t.dataset.dl=1;if(t.closest('.noexp'))return;
     const anchor=t.closest('.tscroll,.scroll')||t;
-    bar(anchor,[['Unduh tabel (.csv)',()=>saveText(base()+'-'+slug(titleFor(t))+'.csv',toCSV(tableGrid(t)))]])});
+    bar(anchor,[['Unduh tabel (.png)',()=>window.tableToCanvas(t).toBlob(b=>b&&save(base()+'-'+slug(titleFor(t))+'.png',b),'image/png')],['Unduh tabel (.csv)',()=>saveText(base()+'-'+slug(titleFor(t))+'.csv',toCSV(tableGrid(t)))]])});
   // grafik
   dash.querySelectorAll('svg:not([data-dl])').forEach(s=>{s.dataset.dl=1;
     if(s.closest('.noexp,button,.dlbar'))return;const vb=s.viewBox&&s.viewBox.baseVal;if(!vb||vb.width<200)return;
