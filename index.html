@@ -1,0 +1,586 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sajiin — sajikan data penelitian</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&family=Outfit:wght@500;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css?v=11">
+</head>
+<body class="home">
+<div class="wrap">
+  <header class="top">
+    <div class="logo" id="logo" title="Kembali ke awal">Sajiin</div>
+    <div class="tag">Data diolah di komputer Anda, tidak dikirim ke mana pun</div>
+  </header>
+
+  <!-- ============ HOME ============ -->
+  <main id="home">
+    <section class="hero">
+      <div class="hero-t">
+        <h1 class="up" style="--d:.05s"><small>sajiin</small>datamu</h1>
+        <p class="lead up" style="--d:.18s">Penyajian data penelitian… tanpa ribet</p>
+        <p class="up" style="--d:.24s">Unggah data, pilih gaya NVivo, SPSS, atau RapidMiner, lalu unduh tabel dan grafiknya. Tanpa instal, tanpa lisensi.</p>
+        <div class="row up" style="--d:.32s"><button class="btn big" id="cta">Mulai dari file saya <span class="arr">→</span></button><button class="btn ghost big" id="cta-demo">Lihat contoh</button></div>
+      </div>
+      <div class="mascot up" style="--d:.25s">
+        <svg viewBox="0 0 360 340" role="img" aria-label="Maskot kertas Sajiin">
+          <ellipse class="m-shadow" cx="180" cy="322" rx="92" ry="11" fill="#141414" opacity=".28"/>
+          <g class="m-mini"><rect class="ol" x="14" y="92" width="44" height="56" rx="5" fill="#fff6d6" transform="rotate(-14 36 120)"/><path class="ol" d="M24 112h22M24 122h16" fill="none" transform="rotate(-14 36 120)"/></g>
+          <g class="m-mini b2"><rect class="ol" x="304" y="214" width="40" height="50" rx="5" fill="#59c9c1" transform="rotate(12 324 239)"/><path class="ol" d="M313 232h20M313 242h13" fill="none" transform="rotate(12 324 239)"/></g>
+          <path class="ol m-star" d="M52 220l5 12 12 5-12 5-5 12-5-12-12-5 12-5z" fill="#fff"/>
+          <path class="ol m-star s2" d="M300 40l4 10 10 4-10 4-4 10-4-10-10-4 10-4z" fill="#f2c94c"/>
+          <path class="ol m-star s3" d="M110 22l3 8 8 3-8 3-3 8-3-8-8-3 8-3z" fill="#fff"/>
+          <g class="m-plane"><path class="ol" d="M20 40l52-18-22 46-8-18z" fill="#fff"/><path class="ol" d="M72 22L42 50" fill="none"/></g>
+          <g class="m-body">
+            <rect class="ol m-back1" x="96" y="56" width="168" height="222" rx="12" fill="#59c9c1"/>
+            <rect class="ol m-back2" x="96" y="56" width="168" height="222" rx="12" fill="#f28c28"/>
+            <path class="ol" d="M150 276v26m60-26v26" fill="none"/>
+            <rect class="ol" x="128" y="300" width="36" height="16" rx="8" fill="#f28c28"/><rect class="ol" x="196" y="300" width="36" height="16" rx="8" fill="#f28c28"/>
+            <path class="ol" d="M94 170c-22 6-34 20-38 40" fill="none"/><circle class="ol" cx="55" cy="214" r="9" fill="#fff"/>
+            <g class="m-arm"><path class="ol" d="M266 168c20-8 32-22 38-42" fill="none"/><path class="ol" d="M306 120l12-22" fill="none" stroke-width="6"/><circle class="ol" cx="326" cy="80" r="24" fill="#bff0ec" stroke-width="5"/><path d="M314 72c4-7 10-10 17-9" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round"/></g>
+            <path class="ol" d="M92 52h140l36 36v178a12 12 0 0 1-12 12H104a12 12 0 0 1-12-12z" fill="#fff"/>
+            <path class="ol" d="M232 52v24a12 12 0 0 0 12 12h24z" fill="#f2c94c"/>
+            <ellipse class="m-eye" cx="150" cy="124" rx="8" ry="10" fill="#141414"/><ellipse class="m-eye" cx="204" cy="124" rx="8" ry="10" fill="#141414"/>
+            <circle cx="132" cy="144" r="8" fill="#e59be6" opacity=".8"/><circle cx="222" cy="144" r="8" fill="#e59be6" opacity=".8"/>
+            <path class="ol" d="M162 146q15 14 30 0" fill="none"/>
+            <path class="ol" d="M116 252h128" fill="none"/>
+            <rect class="ol m-bar" x="124" y="204" width="22" height="48" rx="3" fill="#f28c28"/>
+            <rect class="ol m-bar" x="154" y="184" width="22" height="68" rx="3" fill="#59c9c1"/>
+            <rect class="ol m-bar" x="184" y="196" width="22" height="56" rx="3" fill="#e59be6"/>
+            <rect class="ol m-bar" x="214" y="174" width="22" height="78" rx="3" fill="#f2c94c"/>
+          </g>
+        </svg>
+      </div>
+      <div class="wave" aria-hidden="true"></div>
+    </section>
+
+    <section class="about">
+      <div class="about-t"><h2>Apa itu Sajiin?</h2>
+        <p>Sajiin adalah <b>aplikasi berbasis web untuk penyajian data penelitian</b>. Anda memasukkan data mentah, seperti hasil kuesioner, kutipan wawancara, atau kumpulan teks, lalu Sajiin menyusunnya menjadi tabel dan grafik yang siap masuk ke laporan, skripsi, atau artikel.</p></div>
+      <ul>
+        <li><b>Berbasis web.</b> Dibuka lewat browser, tanpa instal dan tanpa lisensi.</li>
+        <li><b>Tiga model penyajian.</b> Statistik bergaya SPSS, kualitatif bergaya NVivo, dan text mining bergaya RapidMiner.</li>
+        <li><b>Data tetap di tangan Anda.</b> Semua dihitung di komputer Anda, tidak diunggah ke server.</li>
+        <li><b>Hasil bisa dibawa.</b> Tiap tabel dan grafik bisa diunduh, termasuk file untuk dibuka di alat aslinya.</li>
+      </ul>
+    </section>
+    <div class="sec-label">Mulai dari mana?</div>
+    <div class="doors">
+      <button class="door main" data-door="csv"><span class="tile" aria-hidden="true"><svg viewBox="0 0 96 96"><path class="ol" d="M26 14h32l14 14v50a4 4 0 0 1-4 4H26a4 4 0 0 1-4-4V18a4 4 0 0 1 4-4z" fill="#fff"/><path class="ol" d="M58 14v10a4 4 0 0 0 4 4h10z" fill="#f2c94c"/><g class="i-up"><path class="ol" d="M47 66V40m-11 11l11-11 11 11" fill="none" stroke-width="3.2"/></g></svg></span><div class="n">Mulai di sini</div><h3>Unggah file data</h3><p>Excel (.xlsx) atau CSV. Hasil kuesioner, tabel koding, ekspor Google Form, atau hasil scraping.</p></button>
+      <button class="door" data-door="paste"><span class="tile" aria-hidden="true"><svg viewBox="0 0 96 96"><rect class="ol" x="20" y="16" width="56" height="66" rx="5" fill="#fff"/><rect class="ol" x="36" y="9" width="24" height="13" rx="4" fill="#f28c28"/><path class="ol i-line" pathLength="1" d="M30 38h36" fill="none"/><path class="ol i-line l2" pathLength="1" d="M30 50h36" fill="none"/><path class="ol i-line l3" pathLength="1" d="M30 62h22" fill="none"/></svg></span><div class="n">Untuk teks</div><h3>Tempel teks</h3><p>Kutipan wawancara, jawaban terbuka, atau komentar. Satu baris satu kutipan.</p></button>
+      <button class="door" data-door="demo"><span class="tile" aria-hidden="true"><svg viewBox="0 0 96 96"><rect class="ol" x="16" y="16" width="64" height="64" rx="6" fill="#fff"/><path class="ol" d="M26 70h44" fill="none"/><rect class="ol i-bar" x="29" y="46" width="10" height="24" rx="2" fill="#f28c28"/><rect class="ol i-bar b2" x="43" y="34" width="10" height="36" rx="2" fill="#59c9c1"/><rect class="ol i-bar b3" x="57" y="26" width="10" height="44" rx="2" fill="#f2c94c"/></svg></span><div class="n">Lihat dulu</div><h3>Coba data contoh</h3><p>Belum punya data? Lihat hasilnya memakai data buatan.</p></button>
+    </div>
+
+    <section class="panel" id="p-csv">
+      <h3>Unggah file data</h3>
+      <p>Baris pertama harus berisi nama kolom. Jenis tiap kolom (angka, kategori, teks, tanggal) dikenali otomatis. Untuk Excel, yang dibaca adalah lembar pertama.</p>
+      <label class="drop" id="drop"><b>Seret file ke sini</b>atau klik untuk memilih · .xlsx, .csv<input type="file" id="file" accept=".csv,.tsv,.txt,.xlsx,.xls" hidden></label>
+      <div class="row"><button class="btn ghost sm" id="tpl">Unduh contoh format</button><span class="err" id="csv-err"></span></div>
+    </section>
+
+    <section class="panel" id="p-paste">
+      <h3>Tempel teks</h3>
+      <p>Satu baris satu kutipan. Kalau baris diawali <code>Nama:</code> atau <code>@akun:</code>, nama sumbernya ikut terbaca.</p>
+      <input type="text" id="paste-title" placeholder="Judul data, misalnya: Wawancara pedagang pasar">
+      <div style="height:10px"></div>
+      <textarea id="paste-text" placeholder="Informan 1: Harganya naik terus, kami kecewa&#10;Informan 2: Sekarang lebih baik, pelayanannya cepat&#10;..."></textarea>
+      <div class="row"><button class="btn" id="paste-go">Sajikan sekarang</button><span class="err" id="paste-err"></span></div>
+    </section>
+
+    <section class="panel" id="p-demo">
+      <h3>Pilih data contoh</h3>
+      <p>Datanya buatan dan diberi tanda jelas. Gunanya hanya untuk melihat bentuk hasil penyajian.</p>
+      <div class="row"><button class="btn" data-demo="survei">Kuesioner kepuasan layanan kampus</button><button class="btn ghost" data-demo="beras">Komentar media sosial soal harga beras</button></div>
+    </section>
+
+    <div class="sec-label">Cocok untuk data apa?</div>
+    <div class="uses">
+      <div><b>Kuesioner dan survei</b>Frekuensi, deskriptif, tabulasi silang, korelasi, dan reliabilitas dalam tabel bergaya SPSS.<i>Gaya SPSS</i></div>
+      <div><b>Wawancara dan jawaban terbuka</b>Kode tema, frekuensi kata, awan kata, dan matriks koding bergaya NVivo.<i>Gaya NVivo</i></div>
+      <div><b>Teks dalam jumlah besar</b>Daftar kata per kelas dan pengelompokan otomatis bergaya RapidMiner.<i>Gaya RapidMiner</i></div>
+    </div>
+  </main>
+
+  <!-- ============ DASHBOARD ============ -->
+  <main id="dash">
+    <div class="dhead">
+      <div><div class="demo-flag" id="demo-flag" hidden>DATA CONTOH · BUATAN</div>
+        <h2 id="d-title"></h2><div class="meta" id="d-meta"></div></div>
+      <div class="act"><button class="btn ghost sm" id="b-csv" title="Data asli Anda ditambah dua kolom baru: sentimen dan emosi tiap teks">Unduh data + label sentimen</button><button class="btn ghost sm" id="b-pdf">Unduh PDF</button><button class="btn sm" id="b-new">Data baru</button></div>
+    </div>
+
+    <div class="step">Pilih cara penyajian</div>
+    <div id="view-seg">
+      <button data-v="ringkas" class="on"><small>Ringkas</small><b>Gambaran cepat</b><span>Profil tiap variabel dan grafik utama.</span></button>
+      <button data-v="spss"><small>Gaya SPSS</small><b>Statistik</b><span>Frekuensi, deskriptif, tabulasi silang, korelasi, reliabilitas.</span></button>
+      <button data-v="nvivo" data-text="1"><small>Gaya NVivo</small><b>Kualitatif</b><span>Kode tema, frekuensi kata, matriks koding.</span></button>
+      <button data-v="rapidminer" data-text="1"><small>Gaya RapidMiner</small><b>Text mining</b><span>Daftar kata per kelas dan klaster otomatis.</span></button>
+    </div>
+
+    <div class="filters noprint" id="filters">
+      <label id="f-plat-wrap">Platform<select id="f-plat"></select></label>
+      <label id="f-sent-wrap">Sentimen<select id="f-sent"><option value="">Semua</option><option value="pos">Positif</option><option value="neu">Netral</option><option value="neg">Negatif</option></select></label>
+    </div>
+
+    <div class="grid" id="v-ringkas">
+      <section class="card quick"><h4>Bacaan cepat</h4><ul id="quick"></ul></section>
+      <div class="kpis" id="kpis"></div>
+
+      <section class="card"><h4>Profil variabel</h4><p class="sub">Tiap kolom data, jenisnya, kelengkapannya, dan ringkasan isinya.</p><div class="tscroll" id="profile"></div></section>
+      <section class="card" id="c-cats"><h4>Sebaran kategori</h4><p class="sub">Variabel kategori yang paling ringkas, dalam persen dari data yang terisi.</p><div class="minis" id="cats"></div></section>
+
+      <div id="text-cards">
+        <section class="card" id="c-trend"><h4>Kapan ramainya?</h4><p class="sub">Jumlah teks per hari.</p>
+          <div class="seg" id="trend-seg"><button data-m="total" class="on">Total</button><button data-m="sent">Per sentimen</button></div>
+          <div id="trend"></div><div class="legend" id="trend-leg"></div></section>
+        <section class="card c6"><h4>Nada teksnya ke mana?</h4><p class="sub">Sentimen seluruh teks<span id="sent-sub"></span>.</p><div id="sent"></div></section>
+        <section class="card c6"><h4>Emosi apa yang muncul?</h4><p class="sub">Dari teks yang emosinya terbaca.</p><div id="emo"></div></section>
+        <section class="card c4" id="c-plat"><h4>Ramainya di mana?</h4><p class="sub">Teks per platform.</p><div id="plat"></div></section>
+        <section class="card c4" id="c-words"><h4>Kata yang paling sering</h4><p class="sub">Di luar kata sambung.</p><div id="words"></div></section>
+        <section class="card c4" id="c-tags"><h4>Tagar dan emoji</h4><p class="sub">Yang paling banyak dipakai.</p><div id="tags"></div></section>
+        <section class="card" id="c-net"><h4>Siapa berkubu dengan siapa?</h4><p class="sub">Tiap titik satu akun. Garis berarti saling menyebut. Akun yang sering saling menyebut dikelompokkan jadi satu kubu.</p>
+          <div id="net"></div><div class="clusters" id="clusters"></div></section>
+        <section class="card c6" id="c-acc"><h4>Sumber paling aktif</h4><p class="sub">Akun atau sumber dengan interaksi dan teks terbanyak.</p><div id="acc"></div></section>
+        <section class="card c6" id="c-posts"><h4>Teks paling menonjol</h4><p class="sub">Urut dari interaksi tertinggi, mengikuti filter.</p><div id="posts"></div></section>
+      </div>
+
+      <section class="card"><h4>Cara baca dan batasnya</h4>
+        <ul class="note">
+          <li>Jenis variabel dikenali otomatis: angka kalau hampir semua isinya bilangan, teks kalau isinya kalimat panjang, sisanya kategori. Periksa tabel profil sebelum memakai hasilnya.</li>
+          <li>Sentimen dan emosi dibaca dengan kamus kata bahasa Indonesia. Cepat, tapi sarkasme dan sindiran sering lolos. Anggap ini gambaran kasar dan cek teks aslinya.</li>
+          <li>Tombol “Unduh data + label sentimen” memberi data asli Anda ditambah dua kolom baru, sentimen dan emosi tiap teks, supaya labelnya bisa diperiksa satu per satu atau diolah lagi di Excel. Tombol ini hanya muncul kalau datanya punya kolom teks.</li>
+          <li>Hasil hanya mewakili data yang Anda masukkan.</li>
+        </ul></section>
+    </div>
+    <div id="v-spss" class="pv pv-sp" style="display:none"></div>
+    <div id="v-nvivo" class="pv pv-nv" style="display:none"></div>
+    <div id="v-rapidminer" class="pv pv-rm" style="display:none"></div>
+  </main>
+</div>
+<div id="tip"></div>
+
+<script>
+/* ================= util ================= */
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const nf=n=>n>=1e9?(n/1e9).toFixed(1).replace('.',',')+' M':n>=1e6?(n/1e6).toFixed(1).replace('.',',')+' jt':n>=1e4?(n/1e3).toFixed(1).replace('.',',')+' rb':Math.round(n).toLocaleString('id-ID');
+const dec=(x,d=2)=>isFinite(x)?x.toFixed(d).replace('.',','):'–';
+const pct=(a,b)=>b?Math.round(a/b*100):0;
+const dfmt=d=>d.toLocaleDateString('id-ID',{day:'numeric',month:'short'});
+const dkey=d=>d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+const count=(arr,f)=>{const m=new Map();for(const x of arr){const k=f(x);if(k==null)continue;(Array.isArray(k)?k:[k]).forEach(v=>m.set(v,(m.get(v)||0)+1))}return [...m].sort((a,b)=>b[1]-a[1])};
+const tip=$('#tip');
+function showTip(e,html){tip.innerHTML=html;tip.style.display='block';const w=tip.offsetWidth,h=tip.offsetHeight;let x=e.clientX+14,y=e.clientY+14;if(x+w>innerWidth-8)x=e.clientX-w-14;if(y+h>innerHeight-8)y=e.clientY-h-14;tip.style.left=x+'px';tip.style.top=y+'px'}
+function hideTip(){tip.style.display='none'}
+document.addEventListener('mouseover',e=>{const t=e.target.closest('[data-tip]');if(t)showTip(e,t.dataset.tip)});
+document.addEventListener('mousemove',e=>{const t=e.target.closest('[data-tip]');if(t)showTip(e,t.dataset.tip)});
+document.addEventListener('mouseout',e=>{if(e.target.closest('[data-tip]'))hideTip()});
+
+/* ================= kamus ================= */
+const W=s=>new Set(s.split(/\s+/));
+const POS=W('bagus baik mantap keren hebat salut bangga senang bahagia suka cinta dukung mendukung setuju terima kasih makasih apresiasi sukses berhasil maju aman nyaman lancar membantu terbantu bantu solusi tepat cepat murah stabil lega syukur alhamdulillah semangat optimis harapan adil jujur transparan tegas berani top juara terbaik puas memuaskan bersih rapi ramah menang untung manfaat bermanfaat positif sip oke mudah jelas lengkap');
+const NEG=W('buruk jelek parah kecewa mengecewakan marah kesal benci muak bosan capek lelah susah sulit mahal langka macet rusak gagal bohong dusta korup korupsi curang zalim bodoh goblok tolol payah lambat lelet telat ribet rumit bahaya takut khawatir cemas sedih miris prihatin malu memalukan hancur bangkrut rugi merugikan salah keliru ngawur asal tolak menolak protes kritik kecam mengecam sengsara menderita krisis darurat kacau amburadul bobrok pungli mahalnya pengalihan omong kosong percuma kotor panas sempit antre bingung');
+const NEGATOR=W('tidak tak nggak ngga gak ga enggak bukan kurang belum jangan');
+const EMO={
+  Marah:W('marah kesal benci muak geram emosi parah goblok tolol bodoh kecam mengecam protes bohong korup curang zalim ngawur'),
+  Antisipasi:W('semoga harap harapan berharap tunggu menunggu nanti segera bakal akan rencana janji menanti mudah-mudahan optimis'),
+  Senang:W('senang bahagia suka bangga salut mantap keren hebat syukur alhamdulillah lega puas terima makasih cinta'),
+  Sedih:W('sedih miris prihatin kasihan menderita sengsara kecewa pilu duka nangis menangis'),
+  Takut:W('takut khawatir cemas ngeri bahaya waswas panik ancaman darurat'),
+  Terkejut:W('kaget terkejut gila ternyata serius masa heran tiba-tiba wow astaga')
+};
+const EMOJI_POS='🙏❤️👍🔥✨😍🥰👏💪😊🎉', EMOJI_NEG='😡😭😤👎💔🤬😠😢🤮😞';
+const STOP=W('yang dan di ke dari ini itu untuk dengan pada adalah juga tidak ada akan atau saya kita kami aku kamu dia mereka sudah bisa lebih karena jadi kalau tapi sama aja nya lagi mau buat ya yg gak ga nggak ngga udah udh dah sih deh kok dong nih tuh lah kan pun saat oleh para dalam sebagai telah agar bagi hanya masih banyak semua bukan harus atas seperti antara secara hingga sampai tak belum bahwa serta maka namun apa siapa kenapa gimana bagaimana ketika setelah sebelum tetap hari tahun the of rt amp via banget terus biar bakal emang memang kalo tau gitu gini per pekan');
+
+function analyze(text){
+  const low=text.toLowerCase();
+  const toks=low.replace(/https?:\S+/g,' ').match(/[a-zà-ÿ]+(?:-[a-zà-ÿ]+)?/g)||[];
+  let sc=0; const em={};
+  toks.forEach((t,i)=>{
+    const flip=i>0&&NEGATOR.has(toks[i-1])?-1:1;
+    if(POS.has(t))sc+=flip; else if(NEG.has(t))sc-=flip;
+    for(const k in EMO)if(EMO[k].has(t))em[k]=(em[k]||0)+1;
+  });
+  const emojis=text.match(/\p{Extended_Pictographic}/gu)||[];
+  emojis.forEach(e=>{if(EMOJI_POS.includes(e))sc+=1;else if(EMOJI_NEG.includes(e))sc-=1});
+  const emo=Object.entries(em).sort((a,b)=>b[1]-a[1])[0];
+  const clean=low.replace(/https?:\S+/g,' ').replace(/[@#][\w.À-ɏ]+/g,' ');
+  return {
+    sent:sc>0?'pos':sc<0?'neg':'neu', emo:emo?emo[0]:null,
+    words:[...new Set((clean.match(/[a-zà-ÿ]{3,}/g)||[]).filter(w=>!STOP.has(w)))],
+    tags:[...new Set((text.match(/#[\p{L}\d_]+/gu)||[]).map(t=>t.toLowerCase()))],
+    emojis:[...new Set(emojis)],
+    mentions:[...new Set((text.match(/@[\w.]+/g)||[]).map(m=>m.toLowerCase().replace(/\.$/,'')))]
+  };
+}
+const NOTEXT={sent:null,emo:null,words:[],tags:[],emojis:[],mentions:[]};
+
+/* ================= masukan ================= */
+function parseCSV(txt){
+  txt=txt.replace(/^﻿/,'');
+  const first=txt.split(/\r?\n/)[0]||'';
+  const delim=[',',';','\t'].sort((a,b)=>first.split(b).length-first.split(a).length)[0];
+  const rows=[];let row=[],cur='',q=false;
+  for(let i=0;i<txt.length;i++){const c=txt[i];
+    if(q){if(c==='"'){if(txt[i+1]==='"'){cur+='"';i++}else q=false}else cur+=c}
+    else if(c==='"')q=true;
+    else if(c===delim){row.push(cur);cur=''}
+    else if(c==='\n'){row.push(cur);rows.push(row);row=[];cur=''}
+    else if(c!=='\r')cur+=c;}
+  if(cur!==''||row.length){row.push(cur);rows.push(row)}
+  return rows.filter(r=>r.some(c=>c.trim()!==''));
+}
+const tableFromGrid=g=>{if(g.length<2)throw new Error('File kosong atau hanya berisi nama kolom.');return {cols:g[0],rows:g.slice(1)}};
+const COLS={
+  text:['teks','text','konten','content','isi','komentar_teks','caption','tweet','full_text','comment','body','pesan','message','kutipan','jawaban','saran','transkrip','ringkasan','judul','title','judul_berita'],
+  date:['tanggal','date','waktu','time','timestamp','created_at','created','tgl','published','datetime'],
+  platform:['platform','kanal','channel'],
+  account:['akun','account','username','user','author','penulis','handle','screen_name','ownerusername','sumber','source','informan','narasumber'],
+  likes:['likes','like','suka','favorite_count','likescount','reactions'],
+  comments:['komentar','comments','replies','reply_count','balasan','commentscount'],
+  shares:['share','shares','retweet','retweets','retweet_count','repost','bagikan','sharecount']
+};
+const NUMRE=/^-?\d+([.,]\d+)?$|^-?\d{1,3}([.,]\d{3})+([.,]\d+)?$/;
+function parseDate(s){
+  s=String(s).trim(); if(!s)return null;
+  let m=s.match(/^(\d{1,2})[\/\-.](\d{1,2})[\/\-.](\d{4})/);
+  if(m)return new Date(+m[3],+m[2]-1,+m[1]);
+  m=s.match(/^(\d{4})-(\d{2})-(\d{2})/); if(m)return new Date(+m[1],+m[2]-1,+m[3]);
+  if(/^\d{10,13}$/.test(s))return new Date(s.length===10?+s*1000:+s);
+  const d=new Date(s); return isNaN(d)?null:d;
+}
+const num=s=>{s=String(s??'').trim();if(/^-?\d{1,3}([.,]\d{3})+$/.test(s))s=s.replace(/[.,]/g,'');else if(/^-?\d{1,3}(\.\d{3})+,\d+$/.test(s))s=s.replace(/\./g,'').replace(',','.');else if(/^-?\d{1,3}(,\d{3})+\.\d+$/.test(s))s=s.replace(/,/g,'');else s=s.replace(',','.');const n=parseFloat(s);return isFinite(n)?n:0};
+function tableFromPaste(txt){
+  const rows=txt.split(/\r?\n/).map(l=>l.trim()).filter(Boolean).map(l=>{const m=l.match(/^(@?[\p{L}\d_. ]{1,30}?)\s*:\s+(.+)$/u);return m?[m[1],m[2]]:['',l]});
+  return rows.some(r=>r[0])?{cols:['sumber','teks'],rows}:{cols:['teks'],rows:rows.map(r=>[r[1]])};
+}
+function loadScript(src){return new Promise((ok,no)=>{const s=document.createElement('script');s.src=src;s.onload=ok;s.onerror=()=>no(new Error('Pembaca Excel gagal dimuat. Sambungkan internet sekali, atau simpan file sebagai CSV.'));document.head.appendChild(s)})}
+async function tableFromXLSX(buf){
+  if(!window.XLSX)await loadScript('https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js');
+  const wb=XLSX.read(buf,{type:'array',cellDates:true}), ws=wb.Sheets[wb.SheetNames[0]];
+  const g=XLSX.utils.sheet_to_json(ws,{header:1,raw:true,defval:''}).map(r=>r.map(c=>c instanceof Date?dkey(new Date(c.getTime()+12*3600e3)):String(c??'')));
+  return tableFromGrid(g.filter(r=>r.some(c=>c.trim()!=='')));
+}
+
+/* ================= data contoh ================= */
+function rng(seed){return()=>{seed|=0;seed=seed+0x6D2B79F5|0;let t=Math.imul(seed^seed>>>15,1|seed);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+function demoSurvei(){
+  const r=rng(11), pick=a=>a[Math.floor(r()*a.length)], norm=()=>{let s=0;for(let i=0;i<6;i++)s+=r();return (s-3)/.7};
+  const lik=x=>String(Math.max(1,Math.min(5,Math.round(x))));
+  const sar={hi:['Pelayanannya cepat dan petugasnya ramah, terima kasih','Sudah bagus, semoga jam layanan ditambah','Mantap, prosesnya mudah dan jelas','Puas, ruang tunggunya nyaman dan bersih'],
+    mid:['Cukup baik, tapi antrean kadang lama','Informasi di situs perlu lebih lengkap','Biasa saja, semoga ada layanan daring','Tolong jadwal petugas dibuat lebih jelas'],
+    lo:['Kecewa, antre lama dan petugasnya lambat','Ribet, syaratnya membingungkan dan sering salah informasi','Parah, ruangannya panas dan sempit','Lambat sekali, saya harus datang tiga kali']};
+  const cols=['responden','jenis_kelamin','angkatan','fakultas','KL1','KL2','KL3','KL4','KP1','KP2','KP3','saran'], rows=[];
+  for(let i=1;i<=150;i++){
+    const fak=pick(['FISIP','Ekonomi','Teknik','Hukum','Teknik','FISIP']), q=norm()+(fak==='Teknik'?-.35:fak==='Hukum'?.3:0), s=.75*q+.66*norm();
+    rows.push(['R'+String(i).padStart(3,'0'),r()<.56?'Perempuan':'Laki-laki',pick(['2022','2023','2023','2024','2024','2025']),fak,
+      lik(3.5+.8*q+.6*norm()),lik(3.4+.8*q+.6*norm()),lik(3.6+.75*q+.65*norm()),lik(3.3+.8*q+.7*norm()),
+      lik(3.5+.85*s+.5*norm()),lik(3.4+.85*s+.55*norm()),lik(3.6+.8*s+.55*norm()),
+      r()<.12?'':pick(s>.5?sar.hi:s<-.5?sar.lo:sar.mid)]);
+  }
+  return {cols,rows};
+}
+function demoBeras(){
+  const r=rng(7), pick=a=>a[Math.floor(r()*a.length)];
+  const hubs=[['@pasarmurah_id','@tanikita'],['@dompetrakyat','@suarawarung'],['@kabarkota','@wartapagi'],['@anakkos_']], kota=['Bandung','Medan','Makassar','Surabaya','Depok','Palembang'];
+  const T={pos:['Operasi pasar di {k} membantu banget, harga beras mulai stabil 🙏 #HargaBeras','Salut sama petani yang tetap semangat panen, semoga stok aman #BerasLokal','Alhamdulillah beras murah sudah sampai di {k}, terima kasih {m}','Mantap, gudang di {k} dibuka buat warga. Lega rasanya 👍 #HargaBeras','Dukung {m}, distribusinya cepat dan transparan #BerasLokal'],
+    neg:['Harga beras naik lagi, parah banget. Rakyat kecil makin susah 😡 #HargaBeras','Kecewa, katanya stabil tapi di {k} beras mahal terus {m}','Takut stok langka menjelang akhir tahun, penanganannya lambat 😭 #BerasMahal','Warung saya rugi, harga beras naik tiap pekan. Capek {m} #BerasMahal','Miris, antre beras murah di {k} sampai berjam-jam. Kacau 😤','Ini bukan solusi, cuma pengalihan. Harga tetap mahal {m} #HargaBeras'],
+    neu:['Harga beras medium hari ini Rp{n} per kg di pasar {k} #HargaBeras','Jadwal operasi pasar beras pekan ini di {k} diumumkan','Ternyata stok beras di gudang {k} cukup sampai dua bulan, kata {m}','Ada yang tahu harga beras premium di {k} sekarang berapa?','Rapat soal harga beras digelar besok, hasilnya akan diumumkan {m}']};
+  const groups=[[.7,.2,.1],[.08,.17,.75],[.05,.9,.05],[.2,.45,.35]], gsize=[70,110,24,150], accs=[];
+  hubs.forEach((h,g)=>h.forEach(a=>accs.push({name:a,g,hub:true})));
+  const stems=['warga','mbak','bang','info','cerita','suara','teman','anak','pak','kak'];
+  gsize.forEach((n,g)=>{for(let i=0;i<n;i++)accs.push({name:'@'+pick(stems)+'_'+(g+1)+String(100+i),g})});
+  const plats=[['X',.55],['TikTok',.12],['Instagram',.10],['Facebook',.06],['Threads',.05],['YouTube',.04]];
+  const days=[.6,1,2.6,1.8,1.2,.9,.7,.6], tot=days.reduce((a,b)=>a+b), rows=[];
+  days.forEach((w,di)=>{const n=Math.round(1900*w/tot);
+    for(let i=0;i<n;i++){
+      const a=r()<.28?pick(accs.filter(x=>x.hub)):pick(accs), p=groups[a.g], x=r();
+      let s=x<p[0]?'pos':x<p[0]+p[1]?'neu':'neg'; if(di===2&&a.g!==2&&r()<.3)s='neg';
+      const m=r()<.82?pick(hubs[a.g]):pick(hubs[Math.floor(r()*hubs.length)]);
+      let t=pick(T[s]).replace('{k}',pick(kota)).replace('{n}',(12+Math.floor(r()*6))+'.'+Math.floor(r()*9)+'00');
+      t=t.includes('{m}')?t.replace('{m}',m===a.name?pick(hubs[2]):m):(r()<.35&&m!==a.name?t+' '+m:t);
+      let pf='X',y=r(),acc=0; for(const [nm,pw] of plats){acc+=pw;if(y<acc/.92){pf=nm;break}}
+      if(a.g===2&&r()<.6)pf='Media online';
+      const base=Math.exp(r()*(a.hub?9:6.2));
+      rows.push(['2026-11-'+String(3+di).padStart(2,'0'),pf,a.name,t,Math.floor(base),Math.floor(base*.12*r()),Math.floor(base*.3*r())]);
+    }});
+  return {cols:['tanggal','platform','akun','teks','likes','komentar','share'],rows};
+}
+const DEMO={survei:['Kuesioner kepuasan layanan kampus',demoSurvei],beras:['Komentar media sosial: harga beras',demoBeras]};
+
+/* ================= state ================= */
+const PLAT_COLOR={}, SLOTS=['--s1','--s2','--s3','--s4','--s5','--s6','--s7'];
+const SENT={pos:['Positif','--pos'],neu:['Netral','--neu'],neg:['Negatif','--neg']};
+const EMO_LIST=['Marah','Antisipasi','Senang','Sedih','Takut','Terkejut'];
+const TYPE_LABEL={num:'Angka',cat:'Kategori',text:'Teks',date:'Tanggal',other:'Isian bebas'};
+const cv=v=>`var(${v})`;
+let ALL=[], VARS=[], COLNAMES=[], HAS_TEXT=false, META={title:'',demo:false}, trendMode='total';
+
+function load(table,title,demo){
+  const cols=table.cols.map((c,i)=>String(c??'').trim()||('kolom_'+(i+1)));
+  const raws=table.rows.filter(r=>r.some(c=>String(c??'').trim()!=='')).slice(0,50000).map(r=>cols.map((_,i)=>String(r[i]??'').trim()));
+  if(!raws.length)throw new Error('Tidak ada baris data yang bisa dibaca.');
+  const key=cols.map(h=>h.toLowerCase().replace(/\s+/g,'_')), idx={};
+  const info=cols.map((name,i)=>{const vals=raws.map(r=>r[i]).filter(v=>v!==''), n=vals.length;
+    const numN=vals.filter(v=>NUMRE.test(v)).length, avg=n?vals.reduce((a,v)=>a+v.length,0)/n:0, uniq=new Set(vals).size;
+    const type=n&&numN/n>=.9?'num':(COLS.date.includes(key[i])&&vals.slice(0,20).some(v=>parseDate(v)))?'date':avg>40?'text':(uniq>50&&uniq/n>.5)?'other':'cat';
+    return {name,i,type,n,avg}});
+  for(const k in COLS)idx[k]=key.findIndex(h=>COLS[k].includes(h));
+  if(idx.text<0&&idx.comments>=0&&info[idx.comments].type!=='num'){idx.text=idx.comments;idx.comments=-1}
+  if(idx.text>=0&&info[idx.text].type==='num')idx.text=-1;
+  if(idx.text<0){const t=info.filter(c=>c.type==='text').sort((a,b)=>b.avg-a.avg)[0];idx.text=t?t.i:-1}
+  if(idx.text<0&&cols.length===1)idx.text=0;
+  ['likes','comments','shares'].forEach(k=>{if(idx[k]>=0&&info[idx[k]].type!=='num')idx[k]=-1});
+  if(idx.date>=0&&info[idx.date].type!=='date')idx.date=-1;
+  if(idx.account===idx.text)idx.account=-1; if(idx.platform===idx.text)idx.platform=-1;
+  const tx=idx.text; if(tx>=0)info[tx].type='text';
+  HAS_TEXT=tx>=0; COLNAMES=cols;
+  const g=(raw,k)=>idx[k]>=0?raw[idx[k]]:'';
+  ALL=raws.map(raw=>{const text=tx>=0?raw[tx]:'';
+    const r={raw,text,date:idx.date>=0?parseDate(raw[idx.date]):null,platform:g(raw,'platform')||null,account:g(raw,'account')||null,likes:num(g(raw,'likes')),comments:num(g(raw,'comments')),shares:num(g(raw,'shares'))};
+    r.eng=r.likes+r.comments+r.shares; return Object.assign(r,text?analyze(text):NOTEXT)});
+  VARS=info.map(c=>({name:c.name,type:c.type,col:c.i,get:c.type==='num'?r=>NUMRE.test(r.raw[c.i])?num(r.raw[c.i]):null:r=>r.raw[c.i]===''?null:r.raw[c.i]}));
+  if(HAS_TEXT)VARS.push(
+    {name:'Sentimen',type:'cat',derived:true,order:['Positif','Netral','Negatif'],get:r=>r.sent?SENT[r.sent][0]:null},
+    {name:'Emosi',type:'cat',derived:true,order:EMO_LIST,get:r=>r.emo},
+    {name:'Panjang teks',type:'num',derived:true,get:r=>r.text?r.text.length:null});
+  META={title:title||'Data penelitian',demo:!!demo};
+  const pl=count(ALL.filter(r=>r.platform),r=>r.platform);
+  for(const k in PLAT_COLOR)delete PLAT_COLOR[k];
+  pl.forEach(([p],i)=>PLAT_COLOR[p]=i<7?SLOTS[i]:'--neu');
+  $('#f-plat').innerHTML='<option value="">Semua</option>'+pl.map(([p])=>`<option>${esc(p)}</option>`).join('');
+  $('#f-plat-wrap').style.display=pl.length>1&&pl.length<=30?'':'none';
+  $('#f-sent-wrap').style.display=HAS_TEXT?'':'none';
+  $('#b-csv').style.display=HAS_TEXT?'':'none';
+  $('#filters').style.display=HAS_TEXT||pl.length>1?'':'none';
+  $('#f-sent').value=''; trendMode='total';
+  if(window.PEN)PEN.view=HAS_TEXT||!VARS.some(v=>v.type==='num')?'ringkas':'ringkas';
+  $$('#view-seg button').forEach(b=>b.classList.toggle('off',!!b.dataset.text&&!HAS_TEXT));
+  $('#home').style.display='none'; $('#dash').style.display='block'; document.body.classList.remove('home'); scrollTo(0,0);
+  $('#dash').classList.remove('show'); void $('#dash').offsetWidth; $('#dash').classList.add('show');
+  render();
+  $$('#v-ringkas .card').forEach(c=>{c.classList.add('rv');c.classList.remove('in');REVEAL.observe(c)});
+}
+function current(){
+  const p=$('#f-plat').value, s=$('#f-sent').value;
+  return ALL.filter(r=>(!p||r.platform===p)&&(!s||r.sent===s));
+}
+
+/* ================= grafik ================= */
+function rankBars(el,items,opt={}){
+  if(!items.length){el.innerHTML='<div class="empty">Belum ada data untuk bagian ini.</div>';return}
+  const max=Math.max(...items.map(i=>i.value));
+  el.innerHTML=items.map(i=>`<div class="rb" data-tip="<b>${esc(i.label)}</b><br>${nf(i.value)} ${opt.unit||'baris'}">
+    <div class="lab">${esc(i.label)}</div><div class="trk"><div class="bar" style="width:${Math.max(1,i.value/max*100)}%;background:${cv(i.color||'--s1')}"></div></div>
+    <div class="val">${opt.pctOf?pct(i.value,opt.pctOf)+'%':nf(i.value)}</div></div>`).join('');
+}
+function sentCounts(rows){const c={pos:0,neu:0,neg:0};rows.forEach(r=>{if(r.sent)c[r.sent]++});return c}
+function stackHTML(c){
+  const t=c.pos+c.neu+c.neg||1;
+  return '<div class="stack">'+['pos','neu','neg'].filter(k=>c[k]).map(k=>`<span style="width:${c[k]/t*100}%;background:${cv(SENT[k][1])}" data-tip="<b>${SENT[k][0]}</b><br>${nf(c[k])} teks (${pct(c[k],t)}%)"></span>`).join('')+'</div>';
+}
+function lineChart(el,labels,series){
+  const Wd=720,H=250,L=44,R=14,T=12,B=28, n=labels.length;
+  const max=Math.max(1,...series.flatMap(s=>s.values));
+  const step=Math.pow(10,Math.floor(Math.log10(max))), nice=Math.ceil(max/step)*step;
+  const x=i=>n===1?(L+Wd-R)/2:L+i*(Wd-L-R)/(n-1), y=v=>T+(H-T-B)*(1-v/nice);
+  let g='';
+  for(let k=0;k<=4;k++){const v=nice*k/4;g+=`<line x1="${L}" x2="${Wd-R}" y1="${y(v)}" y2="${y(v)}" stroke="var(--line)" stroke-width="1"/><text x="${L-8}" y="${y(v)+4}" text-anchor="end">${nf(v)}</text>`}
+  const every=Math.ceil(n/8);
+  labels.forEach((l,i)=>{if(i%every===0)g+=`<text x="${x(i)}" y="${H-8}" text-anchor="middle">${esc(l)}</text>`});
+  const lines=series.map(s=>`<path d="${s.values.map((v,i)=>(i?'L':'M')+x(i).toFixed(1)+' '+y(v).toFixed(1)).join(' ')}" fill="none" stroke="${cv(s.color)}" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" pathLength="1" class="ln"/>`+
+    (n<=31?s.values.map((v,i)=>`<circle class="pt" cx="${x(i)}" cy="${y(v)}" r="3" fill="${cv(s.color)}" stroke="var(--surface)" stroke-width="2"/>`).join(''):'')).join('');
+  el.innerHTML=`<svg viewBox="0 0 ${Wd} ${H}" role="img" aria-label="Grafik tren per hari"><g class="axis">${g}</g>${lines}<line id="xh" y1="${T}" y2="${H-B}" stroke="var(--ink)" stroke-width="1" visibility="hidden"/><rect x="${L}" y="${T}" width="${Wd-L-R}" height="${H-T-B}" fill="transparent"/></svg>`;
+  const svg=el.querySelector('svg'), xh=svg.querySelector('#xh');
+  svg.onmousemove=e=>{const b=svg.getBoundingClientRect(), px=(e.clientX-b.left)/b.width*Wd;
+    const i=Math.max(0,Math.min(n-1,n===1?0:Math.round((px-L)/((Wd-L-R)/(n-1)))));
+    xh.setAttribute('x1',x(i));xh.setAttribute('x2',x(i));xh.setAttribute('visibility','visible');
+    showTip(e,`<b>${esc(labels[i])}</b><br>`+series.map(s=>`<i style="display:inline-block;width:8px;height:8px;border-radius:2px;background:${cv(s.color)};margin-right:5px"></i>${esc(s.name)}: ${nf(s.values[i])}`).join('<br>'))};
+  svg.onmouseleave=()=>{xh.setAttribute('visibility','hidden');hideTip()};
+}
+
+/* ================= jaringan ================= */
+function network(rows){
+  const eMap=new Map(), deg=new Map();
+  rows.forEach(r=>{if(!r.account)return;const a=r.account.toLowerCase();
+    r.mentions.forEach(m=>{if(m===a)return;const k=a<m?a+'|'+m:m+'|'+a;eMap.set(k,(eMap.get(k)||0)+1)})});
+  eMap.forEach((w,k)=>k.split('|').forEach(n=>deg.set(n,(deg.get(n)||0)+w)));
+  const keep=new Set([...deg].sort((a,b)=>b[1]-a[1]).slice(0,140).map(d=>d[0]));
+  const nodes=[...keep].map(id=>({id,deg:deg.get(id)})), ix=new Map(nodes.map((n,i)=>[n.id,i]));
+  const edges=[...eMap].map(([k,w])=>{const [a,b]=k.split('|');return keep.has(a)&&keep.has(b)?{a:ix.get(a),b:ix.get(b),w}:null}).filter(Boolean);
+  if(nodes.length<4||edges.length<3)return null;
+  const adj=nodes.map(()=>[]); edges.forEach(e=>{adj[e.a].push([e.b,e.w]);adj[e.b].push([e.a,e.w])});
+  let lab=nodes.map((_,i)=>i); const order=nodes.map((_,i)=>i).sort((a,b)=>nodes[b].deg-nodes[a].deg);
+  for(let it=0;it<12;it++){let ch=0;order.forEach(i=>{const c=new Map();adj[i].forEach(([j,w])=>c.set(lab[j],(c.get(lab[j])||0)+w));
+    let best=lab[i],bv=-1;c.forEach((v,l)=>{if(v>bv||(v===bv&&l<best)){bv=v;best=l}});if(best!==lab[i]){lab[i]=best;ch++}});if(!ch)break}
+  const rank=count(lab,l=>l).map(c=>c[0]); nodes.forEach((n,i)=>n.c=Math.min(rank.indexOf(lab[i]),4));
+  const r=rng(3), N=nodes.length;
+  nodes.forEach(n=>{const a=n.c/5*Math.PI*2;n.x=Math.cos(a)*120+(r()-.5)*90;n.y=Math.sin(a)*120+(r()-.5)*90});
+  for(let it=0;it<260;it++){const k=1-it/260;
+    for(let i=0;i<N;i++){let fx=0,fy=0;const a=nodes[i];
+      for(let j=0;j<N;j++){if(i===j)continue;const b=nodes[j];let dx=a.x-b.x,dy=a.y-b.y,d2=dx*dx+dy*dy+.01;const f=900/d2;fx+=dx*f;fy+=dy*f}
+      adj[i].forEach(([j])=>{const b=nodes[j];fx+=(b.x-a.x)*.035;fy+=(b.y-a.y)*.035});
+      fx-=a.x*.012;fy-=a.y*.012; const m=Math.hypot(fx,fy)||1,cap=Math.min(m,18*k+1);
+      a.vx=fx/m*cap;a.vy=fy/m*cap}
+    nodes.forEach(n=>{n.x+=n.vx;n.y+=n.vy})}
+  return {nodes,edges};
+}
+const CL_COLOR=['--s1','--s2','--s3','--s4','--neu'];
+function drawNet(rows){
+  const card=$('#c-net'), G=network(rows);
+  if(!G){card.style.display='none';return}
+  card.style.display='';
+  const Wd=720,H=420,pad=30, xs=G.nodes.map(n=>n.x), ys=G.nodes.map(n=>n.y);
+  const x0=Math.min(...xs),x1=Math.max(...xs),y0=Math.min(...ys),y1=Math.max(...ys);
+  const sx=v=>pad+(v-x0)/(x1-x0||1)*(Wd-2*pad), sy=v=>pad+(v-y0)/(y1-y0||1)*(H-2*pad);
+  const md=Math.max(...G.nodes.map(n=>n.deg)), rad=n=>4+Math.sqrt(n.deg/md)*14;
+  const top=new Set([...G.nodes].sort((a,b)=>b.deg-a.deg).slice(0,8).map(n=>n.id)), placed=[];
+  const names=['Kubu A','Kubu B','Kubu C','Kubu D','Lainnya'];
+  $('#net').innerHTML=`<svg viewBox="0 0 ${Wd} ${H}" role="img" aria-label="Peta jaringan akun yang saling menyebut">`+
+    G.edges.map(e=>`<line x1="${sx(G.nodes[e.a].x)}" y1="${sy(G.nodes[e.a].y)}" x2="${sx(G.nodes[e.b].x)}" y2="${sy(G.nodes[e.b].y)}" stroke="var(--ink3)" stroke-opacity=".22" stroke-width="1"/>`).join('')+
+    G.nodes.map(n=>`<circle cx="${sx(n.x)}" cy="${sy(n.y)}" r="${rad(n)}" fill="${cv(CL_COLOR[n.c])}" stroke="var(--surface)" stroke-width="2" data-tip="<b>${esc(n.id)}</b><br>${names[n.c]} · ${n.deg} sebutan"/>`).join('')+
+    G.nodes.filter(n=>top.has(n.id)).sort((a,b)=>b.deg-a.deg).filter(n=>{const w=n.id.length*7+8,bx={x:sx(n.x)-w/2,y:sy(n.y)-rad(n)-18,w,h:16};if(placed.some(p=>bx.x<p.x+p.w&&p.x<bx.x+bx.w&&bx.y<p.y+p.h&&p.y<bx.y+bx.h))return false;placed.push(bx);return true})
+      .map(n=>`<text x="${sx(n.x)}" y="${sy(n.y)-rad(n)-5}" text-anchor="middle" font-size="11.5" font-weight="600" fill="var(--ink)" stroke="var(--surface)" stroke-width="3" paint-order="stroke">${esc(n.id)}</text>`).join('')+'</svg>';
+  const cOf=new Map(G.nodes.map(n=>[n.id,n.c])), used=[...new Set(G.nodes.map(n=>n.c))].sort();
+  $('#clusters').innerHTML=used.map(c=>{
+    const mem=G.nodes.filter(n=>n.c===c).sort((a,b)=>b.deg-a.deg);
+    const rr=rows.filter(r=>r.account&&cOf.get(r.account.toLowerCase())===c), sc=sentCounts(rr);
+    const dom=Object.entries(sc).sort((a,b)=>b[1]-a[1])[0];
+    const kw=count(rr,r=>r.words).slice(0,4).map(w=>w[0]).join(', ');
+    return `<div class="cl"><b><i style="background:${cv(CL_COLOR[c])}"></i>${names[c]} · ${mem.length} akun</b>
+      <div>Akun utama: ${mem.slice(0,3).map(m=>esc(m.id)).join(', ')}</div>
+      <div>Nada dominan: ${rr.length?SENT[dom[0]][0].toLowerCase()+' ('+pct(dom[1],rr.length)+'%)':'tidak terbaca'}${kw?' · sering menyebut: '+esc(kw):''}</div></div>`}).join('');
+}
+
+/* ================= statistik kecil ================= */
+function numStats(a){const n=a.length;if(!n)return null;const m=a.reduce((x,y)=>x+y,0)/n;return {n,m,sd:n>1?Math.sqrt(a.reduce((x,y)=>x+(y-m)**2,0)/(n-1)):NaN,min:Math.min(...a),max:Math.max(...a)}}
+
+/* ================= render ================= */
+function render(){
+  const rows=current(), N=rows.length, T=rows.filter(r=>r.text), TN=T.length;
+  $('#demo-flag').hidden=!META.demo;
+  $('#d-title').textContent=META.title;
+  const nNum=VARS.filter(v=>v.type==='num'&&!v.derived).length, nCat=VARS.filter(v=>v.type==='cat'&&!v.derived).length;
+  $('#d-meta').textContent=`${nf(ALL.length)} baris data · ${COLNAMES.length} kolom`+(N!==ALL.length?` · filter aktif: ${nf(N)} tampil`:'');
+
+  /* profil variabel */
+  let cells=0,empty=0,complete=0;
+  rows.forEach(r=>{let ok=true;r.raw.forEach(v=>{cells++;if(v===''){empty++;ok=false}});if(ok)complete++});
+  const prof=VARS.map(v=>{const vals=rows.map(r=>v.get(r)).filter(x=>x!=null);let sum='';
+    if(v.type==='num'){const s=numStats(vals);sum=s?`rata-rata ${dec(s.m)} · simpangan baku ${dec(s.sd)} · ${dec(s.min,s.min%1?2:0)} sampai ${dec(s.max,s.max%1?2:0)}`:''}
+    else if(v.type==='cat'){const c=count(vals,x=>x);sum=c.length?`${c.length} kategori · terbanyak “${esc(c[0][0])}” (${pct(c[0][1],vals.length)}%)`:''}
+    else if(v.type==='date'){const d=vals.map(parseDate).filter(Boolean).map(Number);sum=d.length?`${dkey(new Date(Math.min(...d)))} sampai ${dkey(new Date(Math.max(...d)))}`:''}
+    else{sum=vals.length?`${new Set(vals).size} isian berbeda · rata-rata ${Math.round(vals.reduce((a,x)=>a+String(x).length,0)/vals.length)} karakter`:''}
+    return {v,n:vals.length,sum}});
+  $('#profile').innerHTML=`<table><tr><th>Variabel</th><th>Jenis</th><th class="num">Terisi</th><th class="num">Kosong</th><th>Ringkasan</th></tr>`+prof.map(p=>`<tr><td><b>${esc(p.v.name)}</b>${p.v.derived?' <span class="pill">dihitung dari teks</span>':''}</td><td>${TYPE_LABEL[p.v.type]}</td><td class="num">${nf(p.n)}</td><td class="num">${nf(N-p.n)}</td><td>${p.sum||'–'}</td></tr>`).join('')+'</table>';
+  const smallCats=VARS.filter(v=>v.type==='cat'&&!v.derived).map(v=>({v,c:count(rows.map(r=>v.get(r)).filter(x=>x!=null),x=>x)})).filter(o=>o.c.length>=2&&o.c.length<=12).slice(0,4);
+  $('#c-cats').style.display=smallCats.length?'':'none';
+  $('#cats').innerHTML=smallCats.map((o,i)=>`<div><h5>${esc(o.v.name)}</h5><div id="cat-${i}"></div></div>`).join('');
+  smallCats.forEach((o,i)=>rankBars($('#cat-'+i),o.c.slice(0,8).map(([l,v])=>({label:l,value:v})),{pctOf:o.c.reduce((a,x)=>a+x[1],0)}));
+
+  /* bagian teks */
+  $('#text-cards').style.display=HAS_TEXT?'contents':'none';
+  const sc=sentCounts(T), net=pct(sc.pos,TN)-pct(sc.neg,TN);
+  let byDay=[],peak=null,emo=[],emoN=0,tg=[],plats=[];
+  if(HAS_TEXT){
+    const hasAcc=T.some(r=>r.account), hasEng=T.some(r=>r.eng>0);
+    const m=new Map(); T.forEach(r=>{if(!r.date)return;const k=dkey(r.date);if(!m.has(k))m.set(k,{d:new Date(r.date.getFullYear(),r.date.getMonth(),r.date.getDate()),n:0,pos:0,neu:0,neg:0});const o=m.get(k);o.n++;o[r.sent]++});
+    byDay=[...m.values()].sort((a,b)=>a.d-b.d); peak=[...byDay].sort((a,b)=>b.n-a.n)[0];
+    $('#c-trend').style.display=byDay.length>1?'':'none';
+    if(byDay.length>1){
+      const series=trendMode==='total'?[{name:'Teks',color:'--s1',values:byDay.map(d=>d.n)}]:['pos','neu','neg'].map(k=>({name:SENT[k][0],color:SENT[k][1],values:byDay.map(d=>d[k])}));
+      lineChart($('#trend'),byDay.map(d=>dfmt(d.d)),series);
+      $('#trend-leg').innerHTML=series.length>1?series.map(s=>`<span><i style="background:${cv(s.color)}"></i>${s.name}</span>`).join(''):'';
+      $$('#trend-seg button').forEach(b=>b.classList.toggle('on',b.dataset.m===trendMode));
+    }
+    plats=count(T.filter(r=>r.platform),r=>r.platform);
+    const multiPlat=plats.length>1&&plats.length<=12;
+    $('#sent-sub').textContent=multiPlat?', lalu per platform':'';
+    $('#sent').innerHTML=(TN?stackHTML(sc):'<div class="empty">Tidak ada teks pada filter ini.</div>')+
+      `<div class="legend">${['pos','neu','neg'].map(k=>`<span><i style="background:${cv(SENT[k][1])}"></i>${SENT[k][0]} ${pct(sc[k],TN)}%</span>`).join('')}</div>`+
+      (multiPlat?'<div style="height:14px"></div>'+plats.map(([p,n])=>{const c=sentCounts(T.filter(r=>r.platform===p));
+        return `<div class="srow"><div>${esc(p)}</div>${stackHTML(c)}<div class="t">+${pct(c.pos,n)}% · −${pct(c.neg,n)}%</div></div>`}).join(''):'');
+    emo=count(T,r=>r.emo); emoN=emo.reduce((a,e)=>a+e[1],0);
+    rankBars($('#emo'),emo.map(([l,v])=>({label:l,value:v})),{pctOf:emoN,unit:'teks'});
+    $('#c-plat').style.display=multiPlat?'':'none';
+    rankBars($('#plat'),plats.map(([l,v])=>({label:l,value:v,color:PLAT_COLOR[l]})),{pctOf:TN,unit:'teks'});
+    rankBars($('#words'),count(T,r=>r.words).slice(0,10).map(([l,v])=>({label:l,value:v})),{unit:'teks'});
+    tg=count(T,r=>r.tags).slice(0,6); const ej=count(T,r=>r.emojis).slice(0,4);
+    $('#c-tags').style.display=tg.length+ej.length?'':'none';
+    $('#c-words').className='card '+(multiPlat&&tg.length+ej.length?'c4':tg.length+ej.length||multiPlat?'c6':'');
+    $('#c-tags').className='card '+(multiPlat?'c4':'c6'); $('#c-plat').className='card '+(tg.length+ej.length?'c4':'c6');
+    rankBars($('#tags'),[...tg,...ej].map(([l,v])=>({label:l,value:v,color:l[0]==='#'?'--s1':'--s2'})),{unit:'teks'});
+    drawNet(T);
+    $('#c-acc').style.display=hasAcc?'':'none'; $('#c-posts').className='card '+(hasAcc?'c6':'');
+    if(hasAcc){
+      const mm=new Map(); T.forEach(r=>{if(!r.account)return;const k=r.account.toLowerCase();if(!mm.has(k))mm.set(k,{a:r.account,n:0,e:0,pos:0,neu:0,neg:0});const o=mm.get(k);o.n++;o.e+=r.eng;o[r.sent]++});
+      const top=[...mm.values()].sort((a,b)=>(b.e-a.e)||(b.n-a.n)).slice(0,8);
+      $('#acc').innerHTML=`<table><tr><th>Sumber</th><th class="num">Teks</th>${hasEng?'<th class="num">Interaksi</th>':''}<th>Nada</th></tr>`+top.map(o=>{
+        const dom=['pos','neu','neg'].sort((a,b)=>o[b]-o[a])[0];
+        return `<tr><td><b>${esc(o.a)}</b></td><td class="num">${nf(o.n)}</td>${hasEng?`<td class="num">${nf(o.e)}</td>`:''}<td><span class="pill"><i style="background:${cv(SENT[dom][1])}"></i>${SENT[dom][0]}</span></td></tr>`}).join('')+'</table>';
+    }
+    const tp=[...T].sort((a,b)=>b.eng-a.eng||b.text.length-a.text.length).slice(0,6);
+    $('#posts').innerHTML=tp.length?tp.map(r=>`<div class="post"><div class="who">${esc(r.account||'Tanpa nama')} <span>${[r.platform,r.date?dfmt(r.date):''].filter(Boolean).map(esc).join(' · ')}</span></div>
+      <div class="tx">${esc(r.text.length>240?r.text.slice(0,240)+'…':r.text)}</div>
+      <div class="ft"><span class="pill"><i style="background:${cv(SENT[r.sent][1])}"></i>${SENT[r.sent][0]}</span>${r.emo?`<span class="pill">${r.emo}</span>`:''}${hasEng?`<span>${nf(r.eng)} interaksi</span>`:''}</div></div>`).join(''):'<div class="empty">Tidak ada teks pada filter ini.</div>';
+  }
+
+  /* KPI */
+  $('#kpis').innerHTML=[
+    ['Baris data',N,complete===N?'semua baris terisi lengkap':`${nf(complete)} baris terisi lengkap`],
+    ['Variabel',COLNAMES.length,`${nNum} angka · ${nCat} kategori`+(HAS_TEXT?' · 1 teks':'')],
+    ['Sel kosong',cells?dec(empty/cells*100,1)+'%':'–',empty?`${nf(empty)} dari ${nf(cells)} sel`:'tidak ada yang kosong'],
+    HAS_TEXT?['Skor sentimen bersih',(net>0?'+':'')+net,net>5?'condong positif':net<-5?'condong negatif':'relatif berimbang']:['Kolom teks','Tidak ada','gaya NVivo dan RapidMiner tidak dipakai']
+  ].map(k=>`<div class="kpi"><div class="l">${k[0]}</div><div class="v"${typeof k[1]==='number'?` data-n="${k[1]}">${nf(k[1])}`:'>'+k[1]}</div><div class="d">${k[2]}</div></div>`).join('');
+  $$('#kpis [data-n]').forEach(el=>{const n=+el.dataset.n;let t0=0;requestAnimationFrame(function f(t){t0=t0||t;const p=Math.min(1,(t-t0)/700);el.textContent=nf(Math.round(n*(1-Math.pow(1-p,3))));if(p<1)requestAnimationFrame(f)})});
+
+  /* bacaan cepat */
+  const q=[`Ada <b>${nf(N)} baris data</b> dengan ${COLNAMES.length} kolom: ${nNum} angka, ${nCat} kategori`+(HAS_TEXT?', dan kolom teks.':'.')];
+  if(empty)q.push(`<b>${dec(empty/cells*100,1)}% sel kosong.</b> Paling banyak di “${esc([...prof].filter(p=>!p.v.derived).sort((a,b)=>a.n-b.n)[0].v.name)}”.`);
+  const nums=prof.filter(p=>p.v.type==='num'&&!p.v.derived&&p.n).map(p=>({name:p.v.name,s:numStats(rows.map(r=>p.v.get(r)).filter(x=>x!=null))}));
+  const sameScale=nums.length>=3&&nums.every(o=>o.s.min>=0&&o.s.max<=10);
+  if(sameScale){const srt=[...nums].sort((a,b)=>b.s.m-a.s.m);q.push(`Rata-rata tertinggi: <b>${esc(srt[0].name)}</b> (${dec(srt[0].s.m)}). Terendah: ${esc(srt[srt.length-1].name)} (${dec(srt[srt.length-1].s.m)}).`)}
+  if(smallCats[0])q.push(`Pada “${esc(smallCats[0].v.name)}”, terbanyak adalah <b>${esc(smallCats[0].c[0][0])}</b> (${pct(smallCats[0].c[0][1],smallCats[0].c.reduce((a,x)=>a+x[1],0))}%).`);
+  if(HAS_TEXT&&TN){
+    q.push(sc.neg>sc.pos?`Nada teks <b>negatif ${pct(sc.neg,TN)}%</b> lebih besar dari positif ${pct(sc.pos,TN)}%.`:sc.pos>sc.neg?`Nada teks <b>positif ${pct(sc.pos,TN)}%</b> lebih besar dari negatif ${pct(sc.neg,TN)}%.`:`Nada teks positif dan negatif seimbang di ${pct(sc.pos,TN)}%.`);
+    if(peak&&byDay.length>1)q.push(`Paling ramai pada <b>${dfmt(peak.d)}</b> (${nf(peak.n)} teks).`);
+    const w=count(T,r=>r.words)[0]; if(w)q.push(`Kata tersering: <b>“${esc(w[0])}”</b>`+(tg[0]?`. Tagar tersering: ${esc(tg[0][0])}.`:'.'));
+  }
+  $('#quick').innerHTML=N?q.map(s=>`<li>${s}</li>`).join(''):'<li>Tidak ada data pada filter ini.</li>';
+  if(window.renderPenyajian)renderPenyajian();
+}
+
+/* ================= interaksi ================= */
+const REVEAL=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');REVEAL.unobserve(e.target)}}),{rootMargin:'0px 0px -8% 0px'});
+$('#cta').onclick=()=>document.querySelector('.door[data-door=csv]').click();
+$('#cta-demo').onclick=()=>document.querySelector('.door[data-door=demo]').click();
+function download(name,text){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob(['﻿'+text],{type:'text/csv;charset=utf-8'}));a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),2000)}
+const cell=v=>{v=String(v??'');return /[",\n]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v};
+function goHome(){$('#dash').style.display='none';$('#home').style.display='';document.body.classList.add('home');scrollTo(0,0)}
+function tryLoad(fn,errEl){try{$(errEl).textContent='';fn()}catch(e){$(errEl).textContent=e.message}}
+
+$$('.door').forEach(b=>b.onclick=()=>{$$('.panel').forEach(p=>p.classList.remove('on'));const p=$('#p-'+b.dataset.door);p.classList.add('on');p.scrollIntoView({behavior:'smooth',block:'center'})});
+$$('[data-demo]').forEach(b=>b.onclick=()=>{const d=DEMO[b.dataset.demo];load(d[1](),d[0],true)});
+$('#paste-go').onclick=()=>tryLoad(()=>{const t=tableFromPaste($('#paste-text').value);if(t.rows.length<3)throw new Error('Tempel minimal 3 baris dulu.');load(t,$('#paste-title').value.trim()||'Teks yang ditempel')},'#paste-err');
+function readFile(f){if(!f)return;const title=f.name.replace(/\.\w+$/,'').replace(/[_-]+/g,' '), fr=new FileReader();
+  if(/\.xlsx?$/i.test(f.name)){fr.onload=async()=>{try{$('#csv-err').textContent='Membaca Excel…';const t=await tableFromXLSX(new Uint8Array(fr.result));$('#csv-err').textContent='';load(t,title)}catch(e){$('#csv-err').textContent=e.message}};fr.readAsArrayBuffer(f)}
+  else{fr.onload=()=>tryLoad(()=>load(tableFromGrid(parseCSV(fr.result)),title),'#csv-err');fr.readAsText(f)}}
+$('#file').onchange=e=>{readFile(e.target.files[0]);e.target.value=''};
+const drop=$('#drop');
+drop.ondragover=e=>{e.preventDefault();drop.classList.add('over')}; drop.ondragleave=()=>drop.classList.remove('over');
+drop.ondrop=e=>{e.preventDefault();drop.classList.remove('over');readFile(e.dataTransfer.files[0])};
+$('#tpl').onclick=()=>download('contoh-format-sajiin.csv','responden,jenis_kelamin,fakultas,X1,X2,X3,Y1,Y2,saran\nR001,Perempuan,FISIP,4,5,4,4,5,"Pelayanannya cepat dan ramah"\nR002,Laki-laki,Teknik,2,3,2,2,2,"Antre lama, petugasnya lambat"\nR003,Perempuan,Hukum,5,4,4,5,4,\n');
+$('#f-plat').onchange=render; $('#f-sent').onchange=render;
+$$('#trend-seg button').forEach(b=>b.onclick=()=>{trendMode=b.dataset.m;render()});
+$('#b-new').onclick=goHome; $('#logo').onclick=goHome;
+$('#b-pdf').onclick=()=>print();
+$('#b-csv').onclick=()=>download('sajiin-berlabel.csv',[[...COLNAMES,...(HAS_TEXT?['sentimen','emosi']:[])],...current().map(r=>[...r.raw,...(HAS_TEXT?[r.sent?SENT[r.sent][0]:'',r.emo||'']:[])])].map(r=>r.map(cell).join(',')).join('\n'));
+</script>
+<script src="penyajian.js?v=9"></script>
+<script src="spss.js?v=4"></script>
+<script src="unduh.js?v=3"></script>
+</body>
+</html>
