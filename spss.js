@@ -63,7 +63,7 @@ function choices(rows){
   return {catLike,nums};
 }
 function itemGroups(nums){const g=new Map();
-  nums.filter(v=>!v.derived).forEach(v=>{const n=v.name.trim(),m=n.match(/^([A-Za-z]{1,3}\d{0,2})\s*[._-]\s*\d+/)||n.match(/^([A-Za-z]{1,4})\d+$/);
+  nums.filter(v=>!v.derived).forEach(v=>{const n=v.name.trim(),m=n.match(/^([A-Za-z]{1,3}\d{0,2})\s*[._-]\s*\d+/)||n.match(/^([A-Za-z]{1,4})\d+(?:$|[.\s:)])/);
     if(m){const k=m[1].toUpperCase();if(!g.has(k))g.set(k,[]);g.get(k).push(v.name)}});
   return [...g].filter(x=>x[1].length>=2)}
 function defaults(rows){
