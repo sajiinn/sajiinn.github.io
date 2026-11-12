@@ -92,8 +92,8 @@
 
     <section class="panel" id="p-demo">
       <h3>Pilih data contoh</h3>
-      <p>Datanya buatan dan diberi tanda jelas. Gunanya hanya untuk melihat bentuk hasil penyajian.</p>
-      <div class="row"><button class="btn" data-demo="survei">Kuesioner kepuasan layanan kampus</button><button class="btn ghost" data-demo="beras">Komentar media sosial soal harga beras</button></div>
+      <p>Datanya buatan dan diberi tanda jelas. Gunanya hanya untuk melihat bentuk hasil penyajian dan belajar cara membacanya. Jangan dipakai sebagai data penelitian.</p>
+      <div class="row"><button class="btn" data-demo="karhutla">Kuesioner isu karhutla · 100 responden</button><button class="btn ghost" data-demo="survei">Kuesioner kepuasan layanan kampus</button><button class="btn ghost" data-demo="beras">Komentar media sosial soal harga beras</button></div>
     </section>
 
     <div class="sec-label">Cocok untuk data apa?</div>
@@ -309,7 +309,35 @@ function demoBeras(){
     }});
   return {cols:['tanggal','platform','akun','teks','likes','komentar','share'],rows};
 }
-const DEMO={survei:['Kuesioner kepuasan layanan kampus',demoSurvei],beras:['Komentar media sosial: harga beras',demoBeras]};
+function demoKarhutla(){
+  const r=rng(2026), pick=a=>a[Math.floor(r()*a.length)], norm=()=>{let s=0;for(let i=0;i<6;i++)s+=r();return (s-3)/.7};
+  const lik=x=>String(Math.max(1,Math.min(5,Math.round(x))));
+  const cols=['Responden','Jenis kelamin','Usia','Pendidikan terakhir','Domisili','Pekerjaan','Pernah terdampak kabut asap','Sumber informasi utama',
+    'X1.1. Saya sering menerima informasi tentang karhutla dari media sosial.',
+    'X1.2. Saya mengikuti pemberitaan karhutla di televisi atau media daring.',
+    'X1.3. Saya pernah menerima peringatan dini karhutla dari pemerintah setempat.',
+    'X1.4. Saya membicarakan isu karhutla dengan keluarga atau tetangga.',
+    'X2.1. Saya merasa kabut asap mengancam kesehatan keluarga saya.',
+    'X2.2. Saya khawatir karhutla akan terjadi lagi di daerah saya.',
+    'X2.3. Saya menilai karhutla merugikan penghasilan warga di sekitar saya.',
+    'X2.4. Saya percaya dampak karhutla makin berat bila tidak dicegah.',
+    'Y.1. Saya menyimpan masker untuk berjaga-jaga saat kabut asap.',
+    'Y.2. Saya bersedia ikut kegiatan pencegahan karhutla di lingkungan saya.',
+    'Y.3. Saya tahu harus melapor ke mana bila melihat titik api.',
+    'Y.4. Saya tidak membuka lahan dengan cara membakar.'], rows=[];
+  const dom=['Riau','Riau','Kalimantan Tengah','Kalimantan Tengah','Sumatera Selatan','Jambi','Kalimantan Barat'];
+  for(let i=1;i<=100;i++){
+    const d=pick(dom), kena=r()<(d==='Riau'||d==='Kalimantan Tengah'?.78:.52);
+    const e=norm()+(kena?.25:-.2), ri=.5*e+.8*norm()+(kena?.45:-.35), y=.35*e+.5*ri+.7*norm();
+    rows.push(['R'+String(i).padStart(3,'0'),r()<.52?'Perempuan':'Laki-laki',String(18+Math.floor(r()*r()*42)),pick(['SMA/sederajat','SMA/sederajat','Diploma','Sarjana','Sarjana','Pascasarjana']),d,
+      pick(['Petani/pekebun','Petani/pekebun','Pelajar/mahasiswa','Karyawan swasta','Wirausaha','ASN','Ibu rumah tangga']),kena?'Ya':'Tidak',pick(['Media sosial','Media sosial','Televisi','Media daring','Aparat desa','Tetangga/keluarga']),
+      lik(3.6+.8*e+.6*norm()),lik(3.3+.8*e+.6*norm()),lik(2.8+.75*e+.7*norm()),lik(3.2+.8*e+.65*norm()),
+      lik(4+.75*ri+.55*norm()),lik(3.7+.8*ri+.55*norm()),lik(3.5+.8*ri+.6*norm()),lik(4.1+.7*ri+.55*norm()),
+      lik(3.4+.8*y+.6*norm()),lik(3.6+.8*y+.55*norm()),lik(2.9+.8*y+.65*norm()),lik(3.9+.7*y+.65*norm())]);
+  }
+  return {cols,rows};
+}
+const DEMO={karhutla:['Kuesioner isu karhutla (100 responden)',demoKarhutla],survei:['Kuesioner kepuasan layanan kampus',demoSurvei],beras:['Komentar media sosial: harga beras',demoBeras]};
 
 /* ================= state ================= */
 const PLAT_COLOR={}, SLOTS=['--s1','--s2','--s3','--s4','--s5','--s6','--s7'];
@@ -583,7 +611,7 @@ $('#b-exp').onclick=()=>setExp(document.body.classList.contains('no-exp'));
 $('#b-csv').onclick=()=>download('sajiin-berlabel.csv',[[...COLNAMES,...(HAS_TEXT?['sentimen','emosi']:[])],...current().map(r=>[...r.raw,...(HAS_TEXT?[r.sent?SENT[r.sent][0]:'',r.emo||'']:[])])].map(r=>r.map(cell).join(',')).join('\n'));
 </script>
 <script src="penyajian.js?v=10"></script>
-<script src="spss.js?v=6"></script>
+<script src="spss.js?v=8"></script>
 <script src="tabel.js?v=1"></script>
 <script src="unduh.js?v=5"></script>
 <script src="pdf.js?v=3"></script>

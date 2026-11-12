@@ -3,6 +3,27 @@
 (function(){
 const {dl,toCSV,slug,oneLine,f1,f2,f3,S,exp:X,intro:I}=window.PENH;
 const $=s=>document.querySelector(s);
+document.head.insertAdjacentHTML('beforeend',`<style>
+.pv .pick{padding:14px 16px}
+.pv .pick section{border-top:1px dashed #cfcfcf;padding:12px 0 10px}
+.pv .pick section:first-of-type{border-top:0;padding-top:6px}
+.pv .pick h6{margin:0;font-size:13.5px;font-weight:700}
+.pv .pick h6 small{font-weight:400;color:#555;font-size:12.5px;margin-left:6px}
+.pv .pick .how{margin:4px 0 8px;font-size:12.5px;color:#333;max-width:780px;line-height:1.55}
+.pv .pick .how b{color:#141414}
+.pv .pick .how .ex{display:block;margin-top:5px;padding:5px 9px;background:#fff8e0;border-left:4px solid #141414;border-radius:4px}
+.pv .pick .how .ex i{font-style:normal;font-weight:700;background:#fff;border:1px solid #141414;border-radius:4px;padding:0 6px;margin-right:2px}
+.pv .pick .q{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px}
+.pv .pick .q button{font:600 11.5px/1.4 "DM Sans",system-ui,sans-serif;color:#141414;border:1.5px solid #141414;background:#fff;border-radius:999px;padding:2px 10px;cursor:pointer}
+.pv .pick .q button:hover{background:#f2c94c}
+.pv .pick .q button.main{background:#e59be6}
+.pv .pick .list{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:3px 18px;max-height:172px;overflow:auto;border:1px solid #d5d5d5;border-radius:6px;padding:8px 10px;background:#fff}
+.pv .pick .list label{display:flex;gap:6px;align-items:flex-start;min-width:0;white-space:normal;cursor:pointer}
+.pv .pick .list label span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pv .pick .list input{flex:none;margin:3px 0 0}
+.pv .pick .sel{display:flex;gap:14px;flex-wrap:wrap}
+.pv .pick .sel select{max-width:320px}
+</style>`);
 
 /* ---------- statistik ---------- */
 function gammaln(x){const c=[76.18009172947146,-86.50532032941677,24.01409824083091,-1.231739572450155,.001208650973866179,-.000005395239384953];let y=x,t=x+5.5;t-=(x+.5)*Math.log(t);let s=1.000000000190015;for(let j=0;j<6;j++)s+=c[j]/++y;return -t+Math.log(2.5066282746310005*s/x)}
@@ -41,13 +62,17 @@ function choices(rows){
   const catLike=[...cats.filter(v=>!v.derived),...cats.filter(v=>v.derived),...nums.filter(v=>!v.derived&&lowCard(v,rows))];
   return {catLike,nums};
 }
+function itemGroups(nums){const g=new Map();
+  nums.filter(v=>!v.derived).forEach(v=>{const n=v.name.trim(),m=n.match(/^([A-Za-z]{1,3}\d{0,2})\s*[._-]\s*\d+/)||n.match(/^([A-Za-z]{1,4})\d+$/);
+    if(m){const k=m[1].toUpperCase();if(!g.has(k))g.set(k,[]);g.get(k).push(v.name)}});
+  return [...g].filter(x=>x[1].length>=2)}
 function defaults(rows){
   const {catLike,nums}=choices(rows), realCats=catLike.filter(v=>v.type==='cat');
   const usable=realCats.filter(v=>{const k=new Set(rows.map(r=>v.get(r)).filter(x=>x!=null)).size;return k>=2&&k<=15});
   const likert=nums.filter(v=>!v.derived&&lowCard(v,rows)&&rows.every(r=>{const x=v.get(r);return x==null||(Number.isInteger(x)&&x>=0&&x<=10)}));
   const items=(likert.length>=2?likert:nums.filter(v=>!v.derived)).slice(0,8);
   const senti=byName('Sentimen');
-  return {freq:usable.slice(0,3).map(v=>v.name),desc:nums.slice(0,10).map(v=>v.name),items:items.map(v=>v.name),
+  return {freq:usable.slice(0,3).map(v=>v.name),desc:nums.slice(0,10).map(v=>v.name),items:(itemGroups(nums)[0]||[0,items.map(v=>v.name)])[1].slice(0,12),
     row:(usable.find(v=>!v.derived)||usable[0]||{}).name||'',col:(senti&&usable.includes(senti)&&usable.some(v=>!v.derived)?senti:usable.find(v=>v!==(usable.find(u=>!u.derived)||usable[0]))||{}).name||''};
 }
 function fmtCat(x){return typeof x==='number'?String(x):x}
@@ -83,9 +108,9 @@ function renderSP(rows){
   const el=$('#v-spss');
   if(S.spMeta!==META){S.spMeta=META;S.sp=defaults(rows)}
   const P=S.sp,{catLike,nums}=choices(rows),N=rows.length;
-  const fv=P.freq.map(byName).filter(Boolean),dv=P.desc.map(byName).filter(Boolean),iv=P.items.map(byName).filter(Boolean).slice(0,10);
+  const fv=P.freq.map(byName).filter(Boolean),dv=P.desc.map(byName).filter(Boolean),iv=P.items.map(byName).filter(Boolean).slice(0,12);
   const rv=byName(P.row),cvv=byName(P.col);
-  const chk=(grp,list,sel)=>list.map(v=>`<label><input type="checkbox" data-grp="${grp}" value="${esc(v.name)}"${sel.includes(v.name)?' checked':''}> ${esc(v.name)}</label>`).join('')||'<span class="hint">Tidak ada variabel yang cocok.</span>';
+  const chk=(grp,list,sel)=>list.map(v=>`<label title="${esc(v.name)}"><input type="checkbox" data-grp="${grp}" value="${esc(v.name)}"${sel.includes(v.name)?' checked':''}> <span>${esc(v.name)}</span></label>`).join('')||'<span class="hint">Tidak ada variabel yang cocok.</span>';
   const opt=(list,sel)=>'<option value="">(tidak dipakai)</option>'+list.map(v=>`<option${v.name===sel?' selected':''}>${esc(v.name)}</option>`).join('');
   let out='',outline=[];
 
@@ -155,17 +180,40 @@ function renderSP(rows){
   if(!out)out='<p class="hint">Belum ada variabel yang dipilih. Centang variabel di panel atas.</p>';
   else out+='<p class="hint" style="margin-top:26px;max-width:640px">Cara hitung mengikuti SPSS: kategori diurutkan menaik menurut nilainya; Percent dari seluruh kasus dan Valid Percent dari kasus terisi; simpangan baku memakai pembagi n − 1; Correlations memakai pasangan terisi (pairwise); Reliability memakai kasus yang semua butirnya terisi (listwise); Chi-Square memakai kasus yang kedua variabelnya terisi.</p>';
 
+  const sh=n=>{n=String(n);return esc(n.length>46?n.slice(0,44)+'…':n)};
+  const pc=catLike.filter(v=>v.type==='cat'&&!v.derived).filter(v=>{const k=new Set(rows.map(r=>v.get(r)).filter(x=>x!=null)).size;return k>=2&&k<=15}),gs=itemGroups(nums);
+  const E=t=>`<span class="ex"><i>Contoh di data ini</i> ${t}</span>`;
+  const ex={
+    f:pc.length?E(`centang “${sh(pc[0].name)}”${pc[1]?` dan “${sh(pc[1].name)}”`:''}. Hasilnya tabel yang memperlihatkan berapa responden di tiap pilihan, lengkap dengan persennya.`):'',
+    d:gs.length?E(`centang semua butir ${esc(gs[0][0])} (${gs[0][1].length} butir). Hasilnya rata-rata tiap butir, jadi kamu tahu pernyataan mana yang paling disetujui responden.`):(nums[0]?E(`centang “${sh(nums[0].name)}”. Hasilnya rata-rata, nilai terkecil, dan nilai terbesarnya.`):''),
+    c:pc.length>=2?E(`pilih baris “${sh(P.row||pc[0].name)}” dan kolom “${sh(P.col&&P.col!==P.row?P.col:pc[1].name)}”. Hasilnya memperlihatkan apakah jawaban di kolom berbeda antar kelompok di baris.`):'',
+    r:gs.length?E(`klik tombol “Butir ${esc(gs[0][0])} saja” dan catat alpha-nya${gs[1]?`, lalu klik “Butir ${esc(gs[1][0])} saja”`:''}${gs[2]?`, lalu “Butir ${esc(gs[2][0])} saja”`:''}. Tiap variabel mendapat nilai alpha sendiri.`):''
+  };
   el.innerHTML=`<div class="pv-bar"><b>Gaya SPSS · Output Viewer</b>
       <button class="pv-btn" data-dl="sp-sps">Syntax (.sps)</button><button class="pv-btn" data-dl="sp-data">Data untuk SPSS (.csv)</button><button class="pv-btn" data-dl="html">Output ini (.html)</button></div>
     <div class="pick noexp"><b>Pilih variabel</b>
-      <div><span>Frequencies</span>${chk('freq',catLike,P.freq)}</div>
-      <div><span>Descriptives</span>${chk('desc',nums,P.desc)}</div>
-      <div><span>Crosstabs</span><label>Baris <select data-sel="row">${opt(catLike,P.row)}</select></label><label>Kolom <select data-sel="col">${opt(catLike,P.col)}</select></label></div>
-      <div><span>Correlations dan Reliability</span>${chk('items',nums.filter(v=>!v.derived),P.items)}</div></div>
+      <section><h6>Frequencies <small>menghitung berapa orang di tiap pilihan</small></h6>
+        <p class="how"><b>Centang</b> variabel yang isinya pilihan, seperti jenis kelamin, pekerjaan, atau jawaban ya/tidak. <b>Jangan centang</b> butir skala (X1.1, X1.2, dan seterusnya), kecuali kamu memang mau melihat sebaran jawaban satu butir. Isian bebas seperti nama tidak perlu.${ex.f}</p>
+        <div class="q"><button data-q="freq|">Kosongkan</button><button data-q="freq|*">Centang semua</button></div>
+        <div class="list">${chk('freq',catLike,P.freq)}</div></section>
+      <section><h6>Descriptives <small>rata-rata dan sebaran</small></h6>
+        <p class="how"><b>Centang</b> variabel angka yang wajar dirata-rata: butir skala, total skor, usia, atau penghasilan. <b>Jangan centang</b> angka yang sebenarnya kode kategori, misalnya 1 = laki-laki dan 2 = perempuan.${ex.d}</p>
+        <div class="q"><button data-q="desc|">Kosongkan</button><button data-q="desc|*">Centang semua</button></div>
+        <div class="list">${chk('desc',nums,P.desc)}</div></section>
+      <section><h6>Crosstabs <small>membandingkan dua variabel pilihan</small></h6>
+        <p class="how">Pilih satu variabel untuk <b>baris</b> dan satu untuk <b>kolom</b>, misalnya jenis kelamin dengan pekerjaan. Pilih variabel yang pilihannya sedikit. Biarkan “(tidak dipakai)” kalau tabel ini tidak kamu perlukan.${ex.c}</p>
+        <div class="sel"><label>Baris <select data-sel="row">${opt(catLike,P.row)}</select></label><label>Kolom <select data-sel="col">${opt(catLike,P.col)}</select></label></div></section>
+      <section><h6>Correlations dan Reliability <small>menguji butir kuesioner</small></h6>
+        <p class="how"><b>Centang</b> hanya butir yang mengukur <b>satu variabel yang sama</b>, baca hasilnya, lalu ganti ke variabel berikutnya. Contoh: semua butir X1 dulu, kemudian X2, kemudian Y. <b>Jangan campur</b> butir X1 dengan X2 atau Y, karena nilai alpha gabungan tidak punya arti. Pertanyaan data diri juga jangan dicentang di sini.${ex.r}${P.items.length>12?' Yang dihitung hanya 12 butir pertama yang dicentang.':''}</p>
+        <div class="q">${itemGroups(nums).map(g=>`<button class="main" data-q="items|${esc(g[0])}">Butir ${esc(g[0])} saja (${g[1].length})</button>`).join('')}<button data-q="items|">Kosongkan</button></div>
+        <div class="list">${chk('items',nums.filter(v=>!v.derived),P.items)}</div></section></div>
     <div class="lay"><div class="out"><div class="h">Output</div>${outline.map(o=>`<div data-go="${o[0]}">${o[1]}</div>`).join('')}</div><div class="res">${I('Kapan pakai gaya SPSS?','Saat datamu berupa angka dan pilihan jawaban, misalnya hasil kuesioner. Gaya ini menjawab tiga hal: berapa banyak, berapa rata-ratanya, dan apakah dua hal saling berhubungan. Centang variabel di panel “Pilih variabel” untuk mengatur tabel yang muncul.')}${out}</div></div>`;
   el.querySelectorAll('[data-go]').forEach(d=>d.onclick=()=>$('#'+d.dataset.go).scrollIntoView({behavior:'smooth',block:'start'}));
   el.querySelectorAll('[data-grp]').forEach(c=>c.onchange=()=>{const g=c.dataset.grp;P[g]=[...el.querySelectorAll(`[data-grp="${g}"]:checked`)].map(x=>x.value);renderSP(rows)});
   el.querySelectorAll('[data-sel]').forEach(s=>s.onchange=()=>{P[s.dataset.sel]=s.value;renderSP(rows)});
+  el.querySelectorAll('[data-q]').forEach(b=>b.onclick=()=>{const [g,k]=b.dataset.q.split('|');
+    const pool={freq:catLike,desc:nums,items:nums.filter(v=>!v.derived)}[g].map(v=>v.name);
+    P[g]=k==='*'?pool:k===''?[]:(itemGroups(nums).find(x=>x[0]===k)||[0,[]])[1];renderSP(rows)});
 }
 
 /* ---------- unduhan ---------- */
