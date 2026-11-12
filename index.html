@@ -109,7 +109,7 @@
     <div class="dhead">
       <div><div class="demo-flag" id="demo-flag" hidden>DATA CONTOH · BUATAN</div>
         <h2 id="d-title"></h2><div class="meta" id="d-meta"></div></div>
-      <div class="act"><button class="btn ghost sm" id="b-csv" title="Data asli Anda ditambah dua kolom baru: sentimen dan emosi tiap teks">Unduh data + label sentimen</button><button class="btn ghost sm" id="b-pdf">Unduh PDF</button><button class="btn sm" id="b-new">Data baru</button></div>
+      <div class="act"><button class="btn ghost sm" id="b-csv" title="Data asli Anda ditambah dua kolom baru: sentimen dan emosi tiap teks">Unduh data + label sentimen</button><button class="btn ghost sm" id="b-exp" title="Tampilkan atau sembunyikan kotak Cara baca">Penjelasan: nyala</button><button class="btn ghost sm" id="b-pdf">Unduh PDF</button><button class="btn sm" id="b-new">Data baru</button></div>
     </div>
 
     <div class="step">Pilih cara penyajian</div>
@@ -129,7 +129,7 @@
       <section class="card quick"><h4>Bacaan cepat</h4><ul id="quick"></ul></section>
       <div class="kpis" id="kpis"></div>
 
-      <section class="card"><h4>Profil variabel</h4><p class="sub">Tiap kolom data, jenisnya, kelengkapannya, dan ringkasan isinya.</p><div class="tscroll" id="profile"></div></section>
+      <section class="card"><h4>Profil variabel</h4><p class="sub">Tiap kolom data, jenisnya, kelengkapannya, dan ringkasan isinya.</p><div class="exp noexp"><b>Cara baca</b>Variabel adalah satu kolom di datamu, misalnya jenis kelamin atau skor satu pertanyaan. Jenis “Angka” bisa dihitung rata-ratanya. Jenis “Kategori” berisi pilihan, jadi yang dihitung adalah jumlah tiap pilihan. Jenis “Teks” berisi kalimat. Kolom Kosong memberi tahu berapa responden yang tidak mengisi. Kalau jenisnya terbaca salah, rapikan kolom itu di file aslimu lalu unggah lagi.</div><div class="tscroll" id="profile"></div></section>
       <section class="card" id="c-cats"><h4>Sebaran kategori</h4><p class="sub">Variabel kategori yang paling ringkas, dalam persen dari data yang terisi.</p><div class="minis" id="cats"></div></section>
 
       <div id="text-cards">
@@ -577,10 +577,13 @@ $('#f-plat').onchange=render; $('#f-sent').onchange=render;
 $$('#trend-seg button').forEach(b=>b.onclick=()=>{trendMode=b.dataset.m;render()});
 $('#b-new').onclick=goHome; $('#logo').onclick=goHome;
 $('#b-pdf').onclick=()=>print();
+function setExp(on){document.body.classList.toggle('no-exp',!on);$('#b-exp').textContent='Penjelasan: '+(on?'nyala':'mati');try{localStorage.setItem('sajiin-penjelasan',on?'1':'0')}catch(e){}}
+$('#b-exp').onclick=()=>setExp(document.body.classList.contains('no-exp'));
+(function(){let v='1';try{v=localStorage.getItem('sajiin-penjelasan')||'1'}catch(e){}setExp(v!=='0')})();
 $('#b-csv').onclick=()=>download('sajiin-berlabel.csv',[[...COLNAMES,...(HAS_TEXT?['sentimen','emosi']:[])],...current().map(r=>[...r.raw,...(HAS_TEXT?[r.sent?SENT[r.sent][0]:'',r.emo||'']:[])])].map(r=>r.map(cell).join(',')).join('\n'));
 </script>
-<script src="penyajian.js?v=9"></script>
-<script src="spss.js?v=4"></script>
+<script src="penyajian.js?v=10"></script>
+<script src="spss.js?v=6"></script>
 <script src="unduh.js?v=3"></script>
 </body>
 </html>

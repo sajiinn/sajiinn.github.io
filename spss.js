@@ -1,7 +1,7 @@
 /* Sajiin — penyajian statistik bergaya SPSS untuk variabel apa pun.
    Memakai global dari index.html (VARS, META, HAS_TEXT, count, esc) dan PENH dari penyajian.js. */
 (function(){
-const {dl,toCSV,slug,oneLine,f1,f2,f3,S}=window.PENH;
+const {dl,toCSV,slug,oneLine,f1,f2,f3,S,exp:X,intro:I}=window.PENH;
 const $=s=>document.querySelector(s);
 
 /* ---------- statistik ---------- */
@@ -24,6 +24,14 @@ function pearson(x,y){const n=x.length;if(n<3)return {r:NaN,p:NaN,n};const mx=me
   const r=sxy/Math.sqrt(sxx*syy);if(!isFinite(r))return {r:NaN,p:NaN,n};const t=r*Math.sqrt((n-2)/(1-r*r));return {r,p:Math.abs(r)>=1?0:tP(t,n-2),n}}
 function alpha(cols){const k=cols.length,n=cols[0].length;if(k<2||n<3)return NaN;const tot=Array.from({length:n},(_,i)=>cols.reduce((a,c)=>a+c[i],0));return k/(k-1)*(1-cols.reduce((a,c)=>a+vari(c),0)/vari(tot))}
 const sig=p=>!isFinite(p)?'':p<.001?'&lt;.001':f3(p).replace(/^0/,'');
+
+/* ---------- penjelasan untuk pembaca awam ---------- */
+const c1=x=>f1(x).replace('.',','),c2=x=>f2(x).replace('.',','),c3=x=>f3(x).replace('.',',');
+const strength=r=>{r=Math.abs(r);return r<.2?'sangat lemah':r<.4?'lemah':r<.6?'sedang':r<.8?'kuat':'sangat kuat'};
+function corrExp(iv,pair){let best=null;for(let a=0;a<iv.length;a++)for(let b=a+1;b<iv.length;b++){const p=pair(a,b);if(isFinite(p.r)&&(!best||Math.abs(p.r)>Math.abs(best.r)))best={r:p.r,a,b}}
+  return 'Korelasi mengukur seberapa erat dua variabel angka bergerak bersama. Nilainya dari −1 sampai 1. Makin dekat ke 1 atau −1, makin erat. Tanda minus berarti arahnya berlawanan: yang satu naik, yang lain turun. Baris Sig. (2-tailed) di bawah 0,05 berarti hubungannya signifikan, dan bintang menandai itu.'+(best?` <i>Di datamu</i> pasangan paling erat adalah <b>${esc(iv[best.a].name)}</b> dan <b>${esc(iv[best.b].name)}</b> (r = ${c3(best.r)}), tergolong ${strength(best.r)} menurut patokan yang umum dipakai.`:'')}
+function relExp(al,iv,cc,tot){const low=iv.filter((v,j)=>pearson(cc[j],tot.map((t,i)=>t-cc[j][i])).r<.3).map(v=>esc(v.name));
+  return `Cronbach's Alpha menjawab satu pertanyaan: apakah butir-butir kuesionermu konsisten mengukur hal yang sama? Nilai 0,70 ke atas umumnya dianggap reliabel. <i>Di datamu</i> alpha = ${c3(al)}, jadi butir-butirnya <b>${al>=.7?'reliabel':'belum reliabel'}</b>. Di tabel Item-Total, kolom Corrected Item-Total Correlation menunjukkan seberapa sejalan satu butir dengan butir lainnya. Nilai di bawah 0,30 biasanya jadi alasan butir itu ditinjau ulang. `+(low.length?`Butir di bawah 0,30: <b>${low.join(', ')}</b>.`:'Semua butirmu di atas 0,30.')+' Kolom terakhir memperlihatkan alpha kalau butir itu dibuang.'}
 
 /* ---------- pilihan variabel ---------- */
 const byName=n=>VARS.find(v=>v.name===n);
@@ -83,7 +91,9 @@ function renderSP(rows){
 
   /* Frequencies */
   if(fv.length){outline.push(['sp-f','Frequencies']);
-    out+=`<h5 id="sp-f">Frequencies</h5><div class="tt">Statistics</div><div class="tw"><table><tr><th colspan="2"></th>${fv.map(v=>`<th>${esc(v.name)}</th>`).join('')}</tr>
+    const fx=fv.map(v=>{const a=rows.map(r=>v.get(r)).filter(x=>x!=null),c=count(a,x=>fmtCat(x))[0];return c?`pada <b>${esc(v.name)}</b> yang terbanyak adalah “${esc(c[0])}” (${c[1]} dari ${a.length}, atau ${c1(c[1]/a.length*100)}%)`:''}).filter(Boolean).join('; ');
+    const eF='Tabel frekuensi menghitung berapa banyak data di tiap kategori. Frequency adalah jumlahnya. Percent adalah persen dari semua data, termasuk yang kosong. Valid Percent adalah persen dari data yang terisi saja; pakai kolom ini di laporan kalau ada data kosong. Cumulative Percent menjumlahkan persen dari baris teratas ke bawah. Grafik batang di bawah tabel menggambarkan jumlah yang sama.'+(fx?` <i>Di datamu</i> ${fx}.`:'');
+    out+=`<h5 id="sp-f">Frequencies</h5>${X(eF)}<div class="tt">Statistics</div><div class="tw"><table><tr><th colspan="2"></th>${fv.map(v=>`<th>${esc(v.name)}</th>`).join('')}</tr>
       <tr><td rowspan="2">N</td><td>Valid</td>${fv.map(v=>`<td class="n">${rows.filter(r=>v.get(r)!=null).length}</td>`).join('')}</tr>
       <tr><td>Missing</td>${fv.map(v=>`<td class="n">${rows.filter(r=>v.get(r)==null).length}</td>`).join('')}</tr></table></div>`+fv.map(v=>freqHTML(v,rows)).join('');
     const v=fv[0],c=catOrder(v,rows.map(r=>v.get(r)).filter(x=>x!=null),10,true),bmax=Math.max(1,...c.map(x=>x[1])),step=Math.pow(10,Math.floor(Math.log10(bmax))),top=Math.ceil(bmax/step)*step,bw=380/c.length;
@@ -94,14 +104,18 @@ function renderSP(rows){
 
   /* Descriptives */
   if(dv.length){outline.push(['sp-d','Descriptives']);
+    const ms=dv.filter(v=>!v.derived).map(v=>{const a=rows.map(r=>v.get(r)).filter(x=>x!=null);return a.length?{n:v.name,m:mean(a),mx:Math.max(...a),mn:Math.min(...a)}:null}).filter(Boolean).filter(o=>o.mn>=0&&o.mx<=10).sort((a,b)=>b.m-a.m);
+    const eD='Tabel ini merangkum variabel angka. N adalah jumlah data yang terisi. Minimum dan Maximum adalah nilai terkecil dan terbesar. Mean adalah rata-rata. Std. Deviation menunjukkan seberapa beragam jawabannya: makin besar angkanya, makin berbeda-beda jawaban responden.'+(ms.length>=2?` <i>Di datamu</i> rata-rata tertinggi ada di <b>${esc(ms[0].n)}</b> (${c2(ms[0].m)}) dan terendah di <b>${esc(ms[ms.length-1].n)}</b> (${c2(ms[ms.length-1].m)}).`:'');
     const listN=rows.filter(r=>dv.every(v=>v.get(r)!=null)).length;
-    out+=`<h5 id="sp-d">Descriptives</h5><div class="tt">Descriptive Statistics</div><div class="tw"><table><tr><th></th><th>N</th><th>Minimum</th><th>Maximum</th><th>Mean</th><th>Std. Deviation</th></tr>
+    out+=`<h5 id="sp-d">Descriptives</h5>${X(eD)}<div class="tt">Descriptive Statistics</div><div class="tw"><table><tr><th></th><th>N</th><th>Minimum</th><th>Maximum</th><th>Mean</th><th>Std. Deviation</th></tr>
       ${dv.map(v=>{const a=rows.map(r=>v.get(r)).filter(x=>x!=null);return a.length?`<tr><td>${esc(v.name)}</td><td class="n">${a.length}</td><td class="n">${numFmt(Math.min(...a))}</td><td class="n">${numFmt(Math.max(...a))}</td><td class="n">${f2(mean(a))}</td><td class="n">${f3(Math.sqrt(vari(a)))}</td></tr>`:`<tr><td>${esc(v.name)}</td><td class="n">0</td><td></td><td></td><td></td><td></td></tr>`}).join('')}
       <tr><td>Valid N (listwise)</td><td class="n">${listN}</td><td></td><td></td><td></td><td></td></tr></table></div>`}
 
   /* Crosstabs */
   if(rv&&cvv&&rv!==cvv){const ct=crosstab(rows,rv,cvv);outline.push(['sp-c','Crosstabs']);
-    out+=`<h5 id="sp-c">Crosstabs</h5>`+(ct.rc.length>1&&ct.cc.length>1?`
+    const okC=ct.rc.length>1&&ct.cc.length>1;
+    const eC=okC?`Tabel silang mempertemukan dua variabel kategori. Bacanya per baris: Count adalah jumlah datanya, dan “% within” adalah persennya di dalam baris itu. <i>Contoh dari datamu</i>: dari ${ct.rt[0]} data “${esc(ct.rc[0])}”, sebanyak ${c1(ct.tab[0][0]/ct.rt[0]*100)}% masuk “${esc(ct.cc[0])}”. Tabel Chi-Square Tests lalu menguji apakah kedua variabel itu berhubungan. Lihat kolom Asymptotic Significance pada baris Pearson Chi-Square: di bawah 0,05 berarti ada hubungan yang signifikan. Nilaimu ${ct.p<.001?'di bawah 0,001':c3(ct.p)}, jadi hubungan <b>${esc(rv.name)}</b> dan <b>${esc(cvv.name)}</b> <b>${ct.p<.05?'signifikan':'belum terbukti'}</b>.`+(ct.low/ct.cells>.2?' Perhatikan peringatan kuning di bawah tabel: syarat ujinya tidak terpenuhi, jadi kesimpulan ini jangan dipakai dulu.':''):'';
+    out+=`<h5 id="sp-c">Crosstabs</h5>${okC?X(eC):''}`+(ct.rc.length>1&&ct.cc.length>1?`
     <div class="tt">Case Processing Summary</div><div class="tw"><table><tr><th rowspan="2"></th><th colspan="2">Valid</th><th colspan="2">Missing</th><th colspan="2">Total</th></tr><tr><th>N</th><th>Percent</th><th>N</th><th>Percent</th><th>N</th><th>Percent</th></tr>
       <tr><td>${esc(rv.name)} * ${esc(cvv.name)}</td><td class="n">${ct.N}</td><td class="n">${f1(ct.N/ct.total*100)}%</td><td class="n">${ct.total-ct.N}</td><td class="n">${f1((ct.total-ct.N)/ct.total*100)}%</td><td class="n">${ct.total}</td><td class="n">100.0%</td></tr></table></div>
     <div class="tt">${esc(rv.name)} * ${esc(cvv.name)} Crosstabulation</div><div class="tw"><table><tr><th colspan="3" rowspan="2"></th><th colspan="${ct.cc.length}">${esc(cvv.name)}</th><th rowspan="2">Total</th></tr><tr>${ct.cc.map(k=>`<th>${esc(k)}</th>`).join('')}</tr>
@@ -121,7 +135,7 @@ function renderSP(rows){
   if(iv.length>=2){outline.push(['sp-r','Correlations']);
     const col=v=>rows.map(r=>v.get(r));const cs=iv.map(col);
     const pair=(a,b)=>{const x=[],y=[];for(let i=0;i<N;i++)if(cs[a][i]!=null&&cs[b][i]!=null){x.push(cs[a][i]);y.push(cs[b][i])}return a===b?{r:1,p:NaN,n:x.length}:pearson(x,y)};
-    out+=`<h5 id="sp-r">Correlations</h5><div class="tt">Correlations</div><div class="tw"><table><tr><th colspan="2"></th>${iv.map(v=>`<th>${esc(v.name)}</th>`).join('')}</tr>
+    out+=`<h5 id="sp-r">Correlations</h5>${X(corrExp(iv,pair))}<div class="tt">Correlations</div><div class="tw"><table><tr><th colspan="2"></th>${iv.map(v=>`<th>${esc(v.name)}</th>`).join('')}</tr>
       ${iv.map((v,a)=>{const ps=iv.map((_,b)=>pair(a,b));return `<tr><td rowspan="3">${esc(v.name)}</td><td>Pearson Correlation</td>${ps.map((p,b)=>`<td class="n">${a===b?'1':isFinite(p.r)?f3(p.r).replace(/^(-?)0/,'$1')+(p.p<.01?'<sup>**</sup>':p.p<.05?'<sup>*</sup>':''):''}</td>`).join('')}</tr>
         <tr><td>Sig. (2-tailed)</td>${ps.map((p,b)=>`<td class="n">${a===b?'':sig(p.p)}</td>`).join('')}</tr><tr><td>N</td>${ps.map(p=>`<td class="n">${p.n}</td>`).join('')}</tr>`}).join('')}</table>
       <div class="fn">**. Correlation is significant at the 0.01 level (2-tailed).<br>*. Correlation is significant at the 0.05 level (2-tailed).</div></div>`;
@@ -132,7 +146,7 @@ function renderSP(rows){
     outline.push(['sp-a','Reliability']);
     out+=`<h5 id="sp-a">Reliability</h5>`;
     if(n>=3){const al=alpha(cc),tot=ok.map((_,i)=>cc.reduce((a,c)=>a+c[i],0));
-      out+=`<div class="tt">Case Processing Summary</div><div class="tw"><table><tr><th colspan="2"></th><th>N</th><th>%</th></tr><tr><td rowspan="3">Cases</td><td>Valid</td><td class="n">${n}</td><td class="n">${f1(n/N*100)}</td></tr><tr><td>Excluded<sup>a</sup></td><td class="n">${N-n}</td><td class="n">${f1((N-n)/N*100)}</td></tr><tr><td>Total</td><td class="n">${N}</td><td class="n">100.0</td></tr></table><div class="fn">a. Listwise deletion based on all variables in the procedure.</div></div>
+      out+=`${X(relExp(al,iv,cc,tot))}<div class="tt">Case Processing Summary</div><div class="tw"><table><tr><th colspan="2"></th><th>N</th><th>%</th></tr><tr><td rowspan="3">Cases</td><td>Valid</td><td class="n">${n}</td><td class="n">${f1(n/N*100)}</td></tr><tr><td>Excluded<sup>a</sup></td><td class="n">${N-n}</td><td class="n">${f1((N-n)/N*100)}</td></tr><tr><td>Total</td><td class="n">${N}</td><td class="n">100.0</td></tr></table><div class="fn">a. Listwise deletion based on all variables in the procedure.</div></div>
       <div class="tt">Reliability Statistics</div><div class="tw"><table><tr><th>Cronbach's Alpha</th><th>N of Items</th></tr><tr><td class="n">${f3(al).replace(/^0/,'')}</td><td class="n">${k}</td></tr></table></div>
       <div class="tt">Item-Total Statistics</div><div class="tw"><table><tr><th></th><th>Scale Mean if Item Deleted</th><th>Scale Variance if Item Deleted</th><th>Corrected Item-Total Correlation</th><th>Cronbach's Alpha if Item Deleted</th></tr>
       ${iv.map((v,j)=>{const rest=tot.map((t,i)=>t-cc[j][i]),others=cc.filter((_,x)=>x!==j);return `<tr><td>${esc(v.name)}</td><td class="n">${f2(mean(rest))}</td><td class="n">${f3(vari(rest))}</td><td class="n">${f3(pearson(cc[j],rest).r).replace(/^(-?)0/,'$1')}</td><td class="n">${k>2?f3(alpha(others)).replace(/^0/,''):'.'}</td></tr>`}).join('')}</table></div>`}
@@ -148,7 +162,7 @@ function renderSP(rows){
       <div><span>Descriptives</span>${chk('desc',nums,P.desc)}</div>
       <div><span>Crosstabs</span><label>Baris <select data-sel="row">${opt(catLike,P.row)}</select></label><label>Kolom <select data-sel="col">${opt(catLike,P.col)}</select></label></div>
       <div><span>Correlations dan Reliability</span>${chk('items',nums.filter(v=>!v.derived),P.items)}</div></div>
-    <div class="lay"><div class="out"><div class="h">Output</div>${outline.map(o=>`<div data-go="${o[0]}">${o[1]}</div>`).join('')}</div><div class="res">${out}</div></div>`;
+    <div class="lay"><div class="out"><div class="h">Output</div>${outline.map(o=>`<div data-go="${o[0]}">${o[1]}</div>`).join('')}</div><div class="res">${I('Kapan pakai gaya SPSS?','Saat datamu berupa angka dan pilihan jawaban, misalnya hasil kuesioner. Gaya ini menjawab tiga hal: berapa banyak, berapa rata-ratanya, dan apakah dua hal saling berhubungan. Centang variabel di panel “Pilih variabel” untuk mengatur tabel yang muncul.')}${out}</div></div>`;
   el.querySelectorAll('[data-go]').forEach(d=>d.onclick=()=>$('#'+d.dataset.go).scrollIntoView({behavior:'smooth',block:'start'}));
   el.querySelectorAll('[data-grp]').forEach(c=>c.onchange=()=>{const g=c.dataset.grp;P[g]=[...el.querySelectorAll(`[data-grp="${g}"]:checked`)].map(x=>x.value);renderSP(rows)});
   el.querySelectorAll('[data-sel]').forEach(s=>s.onchange=()=>{P[s.dataset.sel]=s.value;renderSP(rows)});

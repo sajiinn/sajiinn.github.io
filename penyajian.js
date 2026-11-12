@@ -44,6 +44,12 @@ const PEN_CSS=`
 .pv-sp td+td,.pv-sp th+th{border-left:1px solid #aaa}
 .pv-sp th{vertical-align:bottom;text-align:center}
 .pv-sp td{white-space:nowrap}
+.exp{font:400 13.5px/1.6 "DM Sans",system-ui,sans-serif;color:#2b2a26;background:#fff8e0;border:1.5px solid #141414;border-left-width:6px;border-radius:6px;padding:10px 14px;margin:8px 0 16px;max-width:760px;white-space:normal}
+.exp>b:first-child{display:block;font-size:11px;letter-spacing:.05em;text-transform:uppercase;margin-bottom:3px;color:#141414}
+.exp.intro{background:#f3c9f4}
+.exp i{font-style:normal;font-weight:700;background:#fff;border:1px solid #141414;border-radius:4px;padding:0 6px;white-space:nowrap}
+.no-exp .exp{display:none}
+@media print{.exp{display:none!important}}
 .pv-sp .warn{font-size:12.5px;background:#fff4d6;border-left:3px solid #e0a100;padding:8px 10px;max-width:560px;margin:10px 0 0}
 .pv .pick{padding:12px 16px;border-bottom:1px solid #d9d9d9;background:#fbfbfb;font-size:12.5px}
 .pv .pick>b{display:block;font-size:13px;margin-bottom:4px}
@@ -85,7 +91,9 @@ const SENT_ORDER=['pos','neu','neg'];
 'read more and for with from that this are was has have will his her its not but you who'.split(' ').forEach(w=>STOP.add(w));
 const S={view:'ringkas',themes:null,kwic:'',k:4,rmTab:'data',meta:null};
 window.PEN=S;
-window.PENH={dl,toCSV,slug,oneLine,f1,f2,f3,BOM,S};
+const exp=h=>`<div class="exp noexp"><b>Cara baca</b>${h}</div>`;
+const intro=(t,h)=>`<div class="exp intro noexp"><b>${t}</b>${h}</div>`;
+window.PENH={dl,toCSV,slug,oneLine,f1,f2,f3,BOM,S,exp,intro};
 
 /* tema otomatis: kata yang cukup sering tapi tidak ada di hampir semua baris */
 function autoThemes(rows){
@@ -154,7 +162,8 @@ function renderNV(rows){
       <button class="pv-btn" data-dl="nv-qdc">Codebook (.qdc)</button><button class="pv-btn" data-dl="nv-data">Dataset berkode (.csv)</button>
       <button class="pv-btn" data-dl="nv-wf">Word Frequency (.csv)</button><button class="pv-btn" data-dl="nv-mx">Matrix Coding (.csv)</button><button class="pv-btn" data-dl="html">Tampilan ini (.html)</button></div>
     <div class="pv-body">
-    <h5>Codes</h5><p class="hint">Tiap baris teks dikode otomatis. Files = jumlah sumber berbeda (1 kalau data tanpa kolom sumber). References = jumlah potongan teks yang dikode. Baris induk menghitung gabungan anak-anaknya tanpa hitung ganda.</p>
+    ${intro('Kapan pakai gaya NVivo?','Saat datamu berupa kata-kata: kutipan wawancara, jawaban terbuka, atau komentar. Gaya ini menjawab dua hal: tema apa yang dibicarakan orang, dan seberapa sering tema itu muncul.')}
+    <h5>Codes</h5>${exp('Kode adalah label yang ditempelkan ke potongan teks yang membahas hal yang sama. Kolom References menghitung berapa potongan teks mendapat label itu. Kolom Files menghitung dari berapa sumber potongan itu berasal. Tema di sini dibentuk dari kata kunci; ganti kata kuncinya di kotak bawah supaya cocok dengan penelitianmu.'+(()=>{const k=[...tree[2].kids].sort((a,b)=>b.rows.length-a.rows.length)[0];return k&&k.rows.length?` <i>Di datamu</i> tema yang paling sering muncul adalah <b>${esc(k.name)}</b>, di ${k.rows.length} potongan teks.`:''})())}<p class="hint">Tiap baris teks dikode otomatis. Files = jumlah sumber berbeda (1 kalau data tanpa kolom sumber). References = jumlah potongan teks yang dikode. Baris induk menghitung gabungan anak-anaknya tanpa hitung ganda.</p>
     <p class="hint noexp">Kode tema (kata kunci, pisahkan dengan koma): <input type="text" id="nv-themes" size="48" value="${esc(mx.th.join(', '))}"> <button class="pv-btn" id="nv-themes-go">Terapkan</button> <button class="pv-btn" id="nv-themes-auto">Otomatis</button></p>
     <div class="two"><div class="scroll"><table><tr><th>Name</th><th class="n">Files</th><th class="n">References</th></tr>
       ${tree.map(p=>`<tr class="par"><td>▾ ${p.name}</td><td class="n">${nf(srcN(uni(p)))}</td><td class="n">${nf(uni(p).length)}</td></tr>`+
@@ -162,16 +171,16 @@ function renderNV(rows){
     <div><svg viewBox="0 0 640 260" role="img" aria-label="Hierarchy chart kode tema">${tm.map(t=>`<g><title>${esc(t.n)}: ${t.v} references</title><rect x="${t.x+1}" y="${t.y+1}" width="${Math.max(0,t.w-2)}" height="${Math.max(0,t.h-2)}" rx="3" fill="${t.v/tmax>.66?'#256abf':t.v/tmax>.33?'#5598e7':'#9ec5f4'}"/>${t.w>60&&t.h>26?`<text x="${t.x+8}" y="${t.y+19}" font-size="13" font-weight="600" fill="${t.v/tmax>.33?'#fff':'#0b0b0b'}">${esc(t.n)}</text><text x="${t.x+8}" y="${t.y+35}" font-size="11.5" fill="${t.v/tmax>.33?'#fff':'#0b0b0b'}">${t.v}</text>`:''}</g>`).join('')}</svg>
       <p class="hint" style="margin-top:6px">Hierarchy Chart: luas kotak = jumlah references tiap kode tema.</p></div></div>
 
-    <h5>Word Frequency Query</h5><p class="hint">Kata minimal 3 huruf, di luar kata sambung. Weighted Percentage = porsi kata itu dari seluruh kata yang dihitung.</p>
+    <h5>Word Frequency Query</h5>${exp('Daftar kata yang paling sering dipakai di seluruh teks. Count adalah berapa kali kata itu muncul. Weighted Percentage adalah porsinya dari semua kata yang dihitung. Kata yang sering muncul memberi petunjuk awal soal topik yang ramai dibahas, tapi tetap baca kalimat aslinya sebelum menyimpulkan.'+(wf.list[0]?` <i>Di datamu</i> kata tersering adalah <b>${esc(wf.list[0][0])}</b>, muncul ${nf(wf.list[0][1])} kali.`:''))}<p class="hint">Kata minimal 3 huruf, di luar kata sambung. Weighted Percentage = porsi kata itu dari seluruh kata yang dihitung.</p>
     <div class="two"><div class="scroll"><table><tr><th>Word</th><th class="n">Length</th><th class="n">Count</th><th class="n">Weighted Percentage (%)</th></tr>
       ${wf.list.slice(0,20).map(([w,c])=>`<tr><td>${esc(w)}</td><td class="n">${w.length}</td><td class="n">${nf(c)}</td><td class="n">${f2(c/wf.tot*100)}</td></tr>`).join('')}</table></div>
       <div>${cloudSVG(wf.list)}<p class="hint" style="margin-top:6px;text-align:center">Makin sering sebuah kata muncul, makin besar hurufnya; ukurannya naik lurus mengikuti jumlah kemunculan. Arahkan kursor ke kata untuk melihat jumlahnya.</p></div></div>
 
-    <h5>Matrix Coding Query</h5><p class="hint">Baris = kode tema, kolom = kode sentimen. Isi sel = jumlah references yang dikode keduanya.</p>
+    <h5>Matrix Coding Query</h5>${exp('Tabel ini mempertemukan tema dengan nada teksnya. Tiap sel berisi jumlah potongan teks yang membahas tema di baris itu dengan nada di kolom itu. Sel yang lebih gelap berarti jumlahnya lebih banyak. Pakai tabel ini untuk melihat tema mana yang banyak dikeluhkan dan tema mana yang banyak dipuji.'+(()=>{let bi=-1,bv=0;mx.cells.forEach((c,i)=>{if(c[2]>bv){bv=c[2];bi=i}});return bi>=0?` <i>Di datamu</i> tema dengan teks bernada negatif terbanyak adalah <b>${esc(mx.th[bi])}</b> (${bv} potongan).`:''})())}<p class="hint">Baris = kode tema, kolom = kode sentimen. Isi sel = jumlah references yang dikode keduanya.</p>
     <div class="scroll"><table><tr><th></th>${SENT_ORDER.map((k,i)=>`<th class="n">${'ABC'[i]} : ${SENT[k][0]}</th>`).join('')}</tr>
       ${mx.th.map((t,i)=>`<tr><td>${i+1} : ${esc(t)}</td>${mx.cells[i].map(c=>`<td class="n" style="background:rgba(42,120,214,${(c/cmax*.55).toFixed(2)})">${c}</td>`).join('')}</tr>`).join('')||'<tr><td colspan="4">Belum ada kode tema.</td></tr>'}</table></div>
 
-    <h5>Text Search Query</h5><p class="hint noexp">Cari kata: <input type="text" id="nv-kwic" value="${esc(S.kwic)}"> <button class="pv-btn" id="nv-kwic-go">Cari</button></p>
+    <h5>Text Search Query</h5>${exp('Ketik satu kata, lalu Sajiin menampilkan semua kalimat yang memuatnya, lengkap dengan kata-kata di kiri dan kanannya. Gunanya untuk membaca konteks: kata yang sama bisa dipakai untuk memuji atau mengeluh. Kalimat di sini juga bisa kamu jadikan kutipan langsung di laporan.')}<p class="hint noexp">Cari kata: <input type="text" id="nv-kwic" value="${esc(S.kwic)}"> <button class="pv-btn" id="nv-kwic-go">Cari</button></p>
     <p class="hint">“${esc(S.kwic)}” ditemukan di ${nf(hits.length)} dari ${nf(rows.length)} baris (dicocokkan sebagai kata utuh, huruf besar-kecil diabaikan). Ditampilkan ${Math.min(12,hits.length)} pertama, beserta konteksnya.</p>
     <div class="scroll"><table><tr><th>Sumber</th><th colspan="3">Konteks</th></tr>${hits.slice(0,12).map(h=>`<tr><td>${esc(h[0])}</td><td class="l">${esc(h[1])}</td><td class="kw">${esc(h[2])}</td><td class="r">${esc(h[3])}</td></tr>`).join('')}</table></div>
     </div>`;
@@ -254,11 +263,17 @@ function renderRM(rows){
     <div class="scroll"><table><tr><th>Cluster</th><th class="n">Items</th><th>Kata penciri (bobot centroid)</th><th class="n">Positif</th><th class="n">Netral</th><th class="n">Negatif</th></tr>
     ${km.sizes.map((s,i)=>`<tr><td>cluster_${i}</td><td class="n">${s}</td><td>${km.terms[i].filter(t=>t[1]>0).map(t=>esc(t[0])+' ('+f2(t[1])+')').join(', ')}</td><td class="n">${km.sent[i].pos}</td><td class="n">${km.sent[i].neu}</td><td class="n">${km.sent[i].neg}</td></tr>`).join('')}</table></div>`
     :'<p class="hint">Data terlalu sedikit untuk dibagi menjadi klaster sebanyak itu.</p>');
+  const RMX={
+    data:'Ini datamu sesudah dibaca mesin. Tiap baris adalah satu teks. Kolom biru (id) adalah nomor urut. Kolom hijau (sentimen) adalah kelas teks itu, yang di RapidMiner disebut label.',
+    stat:'Ringkasan tiap kolom: jenis datanya, berapa yang kosong, dan nilai apa yang paling banyak. Cek tabel ini dulu sebelum menganalisis, supaya kamu tahu datanya lengkap dan kelasnya tidak timpang.',
+    word:'Daftar kata hasil pecahan teks. Total Occurences adalah berapa kali kata itu muncul. Document Occurences adalah di berapa teks kata itu muncul. Tiga kolom terakhir memperlihatkan di kelas mana kata itu paling banyak dipakai. Kata yang hanya ramai di kolom Negatif, misalnya, adalah ciri teks keluhan.'+(wl[0]?` <i>Di datamu</i> kata teratas adalah <b>${esc(wl[0].w)}</b>, muncul di ${wl[0].doc} teks.`:''),
+    clus:'Mesin mengelompokkan teks yang kata-katanya mirip, tanpa diberi tahu temanya. Tiap kelompok disebut klaster. Mesin tidak memberi nama klaster; kamu yang menamainya setelah membaca kata pencirinya. Kolom Positif, Netral, dan Negatif membantu melihat nada tiap klaster.'+(km?(()=>{const i=km.sizes.indexOf(Math.max(...km.sizes));return ` <i>Di datamu</i> klaster terbesar adalah cluster_${i} dengan ${km.sizes[i]} teks, bercirikan kata ${km.terms[i].filter(t=>t[1]>0).slice(0,3).map(t=>'<b>'+esc(t[0])+'</b>').join(', ')}.`})():'')
+  };
   el.innerHTML=`<div class="pv-bar"><b>Gaya RapidMiner · proses dan hasil</b>
       <button class="pv-btn" data-dl="rm-rmp">Process (.rmp)</button><button class="pv-btn" data-dl="rm-data">Data (.csv)</button><button class="pv-btn" data-dl="rm-wl">WordList (.csv)</button><button class="pv-btn" data-dl="html">Tampilan ini (.html)</button></div>
-    <div class="pv-body"><h5>Process</h5><p class="hint">Alur operator yang sama dengan file .rmp yang bisa diunduh.</p><div class="scroll">${processSVG()}</div>
+    <div class="pv-body">${intro('Kapan pakai gaya RapidMiner?','Saat teksmu banyak, ratusan sampai ribuan, sehingga tidak mungkin dibaca satu per satu. Gaya ini menjawab dua hal: kata apa yang khas di tiap kelompok teks, dan teks mana saja yang isinya mirip.')}<h5>Process</h5>${exp('Diagram ini adalah urutan kerja mesin, dari kiri ke kanan. Read CSV membaca file. Set Role menandai kolom mana yang jadi nomor dan mana yang jadi kelas. Process Documents memecah tiap teks menjadi kata-kata. Clustering mengelompokkan teks yang kata-katanya mirip.')}<div class="scroll">${processSVG()}</div>
     <div class="tabs noexp">${tabs.map(t=>`<button data-t="${t[0]}" class="${t[0]===S.rmTab?'on':''}">${t[1]}</button>`).join('')}</div>
-    <h5 style="margin-top:0">${tabs.find(t=>t[0]===S.rmTab)[1]}</h5>${body}</div>`;
+    <h5 style="margin-top:0">${tabs.find(t=>t[0]===S.rmTab)[1]}</h5>${exp(RMX[S.rmTab])}${body}</div>`;
   el.querySelectorAll('.tabs button').forEach(b=>b.onclick=()=>{S.rmTab=b.dataset.t;renderPenyajian()});
   if($('#rm-k'))$('#rm-k').onchange=e=>{S.k=+e.target.value;renderPenyajian()};
 }
